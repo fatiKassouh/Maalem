@@ -1,5 +1,5 @@
 // Simple Service Worker for Maalem PWA
-const CACHE_NAME = 'maalem-cache-v3'; // Increment cache version
+const CACHE_NAME = 'maalem-cache-v4'; // Increment cache version
 const ASSETS = [
   '/Maalem.dc.html',
   '/manifest.json',
@@ -40,9 +40,9 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       caches.match('/Maalem.dc.html').then(cached => {
         if (cached) return cached;
-        // Fallback: fetch the clean /Maalem.dc endpoint (which returns 200 OK via rewrite)
-        // to avoid redirected response errors for navigation requests.
-        return fetch('/Maalem.dc');
+        // Fallback: fetch the clean physical /Maalem.dc.html file
+        // to avoid infinite recursion loops in the fetch handler.
+        return fetch('/Maalem.dc.html');
       })
     );
     return;
