@@ -2,8 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta http-equiv="refresh" content="0; url=/Maalem.dc.html" />
-  <title>Maalem - Home</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" href="/maalem-logo.png" type="image/png">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js');
+    }
+  </script>
 </head>
 <body>
   <!-- Redirecting to Maalem.dc.html -->

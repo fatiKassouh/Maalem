@@ -2,6 +2,9 @@
   "name": "maalem",
   "version": "1.0.0",
   "private": true,
+  "dependencies": {
+    "dotenv": "^16.4.5"
+  },
   "scripts": {
     "dev": "npx serve .",
     "dev:vercel": "npx vercel dev --local",
@@ -9,3 +12,4 @@
     "vercel-build": "echo 'No build needed'"
   }
 }
+
