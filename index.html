@@ -171,10 +171,6 @@
       <p class="ob-hint" id="ob-hint">كبس على الميكرو وتكلم</p>
       <div class="ob-answer" id="ob-answer" hidden><span id="ob-answer-text"></span></div>
     </div>
-    <div class="stack" id="ob-actions" hidden>
-      <button class="btn green" onclick="obConfirm()">✓ صحيح، كمّل</button>
-      <button class="btn ghost" onclick="obRedo()">↺ عاود التسجيل</button>
-    </div>
   </section>
 
   <!-- ░░ HOME (voice-first) ░░ -->
@@ -249,7 +245,7 @@
 /* ── State & storage ── */
 const profile = load('maalem_profile', {name:'', city:'', craft:''});
 let convo = [];                  // {role:'me'|'bot', text}
-let obStep = 0, obPending = '';
+let obStep = 0;
 let lastReply = '';
 const OB_STEPS = [
   {key:'name',  q:'شنو سميتك؟'},
@@ -279,7 +275,8 @@ function enterStep(i){
   obStep=i; const step=OB_STEPS[i];
   document.getElementById('ob-q').textContent=step.q;
   document.querySelectorAll('#ob .dot').forEach((d,idx)=>d.classList.toggle('on',idx<=i));
-  obRedo();
+  document.getElementById('ob-answer').hidden=true;
+  setObMic('idle');
   ttsPlay(step.q);                 // ask the question out loud
 }
 function setObMic(state){
@@ -295,24 +292,19 @@ function obRecord(){
   startRec({onProcessing:()=>setObMic('thinking'),onResult:obGotAnswer,
     onError:()=>{setObMic('idle');toast('ما سمعتش مزيان، عاود من فضلك');}});
 }
+// Save the answer, play it back, then go STRAIGHT to the next question —
+// no confirm button, since the artisan may not be able to read.
 function obGotAnswer(text){
-  setObMic('idle'); obPending=text;
+  setObMic('idle');
+  profile[OB_STEPS[obStep].key]=text; save('maalem_profile',profile);
   document.getElementById('ob-answer-text').textContent=text;
   document.getElementById('ob-answer').hidden=false;
-  document.getElementById('ob-actions').hidden=false;
-  ttsPlay(text);                   // play back what we understood
-}
-function obConfirm(){
-  if(!obPending){toast('تكلم الأول 🎙️');return;}
-  profile[OB_STEPS[obStep].key]=obPending; save('maalem_profile',profile);
-  if(obStep<OB_STEPS.length-1){ enterStep(obStep+1); }
-  else{ setupHome(); go('home'); homeGreeting(); }
-}
-function obRedo(){
-  obPending='';
-  document.getElementById('ob-answer').hidden=true;
-  document.getElementById('ob-actions').hidden=true;
-  setObMic('idle');
+  let advanced=false;
+  const next=()=>{ if(advanced)return; advanced=true;
+    if(obStep<OB_STEPS.length-1){ enterStep(obStep+1); }
+    else{ setupHome(); go('home'); homeGreeting(); } };
+  ttsPlay(text,{onEnd:next});       // hear what was understood, then advance
+  setTimeout(next,6000);            // safety: advance even if audio is blocked
 }
 
 /* ── Home ── */
