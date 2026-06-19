@@ -132,6 +132,9 @@
   .prof{padding:22px;display:flex;flex-direction:column;gap:14px}
   .prof .row{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 18px}
   .prof .row .lbl{font-size:12px;color:var(--muted)} .prof .row .val{font-size:18px;font-weight:700;color:var(--orange-deep)}
+  .prof .row .val.sm{font-size:15px;font-weight:600;line-height:1.55}
+  .shield{width:92px;height:92px;border-radius:28px;background:var(--green-tint);
+    display:grid;place-items:center;font-size:44px;margin:0 auto 18px;box-shadow:var(--shadow-sm)}
 
   .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:50;
     background:var(--orange-deep);color:#fff;padding:11px 18px;border-radius:14px;font-size:14px;
@@ -145,8 +148,22 @@
 <div class="zellige"></div>
 <div id="app">
 
+  <!-- ░░ CONSENT (voice) ░░ -->
+  <section class="screen" id="consent">
+    <div style="margin:auto 0;text-align:center">
+      <div class="shield">🔒</div>
+      <h2 class="tagline" style="font-size:22px;margin-top:0">الخصوصية والموافقة</h2>
+      <p class="sub" id="consent-text">باش نخدمو معاك بالصوت، غادي نسجلو كلامك ونصيفطوه لـ Google باش نفهموه ونجاوبوك. المعلومات ديالك (السمية، المدينة، الصنعة) كيبقاو فقط ف التيليفون ديالك، ماشي عندنا. تقدر تمسحهم فأي وقت.</p>
+      <button class="vplay" id="consent-play" style="margin:16px auto 4px" onclick="playConsent()">▶︎</button>
+      <p class="ob-hint">كبس باش تسمع التوضيح</p>
+    </div>
+    <div class="stack">
+      <button class="btn green" onclick="acceptConsent()">✓ موافق، يلا نبداو</button>
+    </div>
+  </section>
+
   <!-- ░░ WELCOME ░░ -->
-  <section class="screen active" id="welcome">
+  <section class="screen" id="welcome">
     <div style="margin:auto 0">
       <img class="brand-logo" src="maalem-logo.png" alt="المعلم Maalem">
       <p class="tagline">مرحبا بيك في المعلم</p>
@@ -235,6 +252,23 @@
       <div class="row"><div class="lbl">المدينة</div><div class="val" id="pf-city">—</div></div>
       <div class="row"><div class="lbl">الصنعة</div><div class="val" id="pf-craft">—</div></div>
       <button class="btn ghost" onclick="startOb()">🎙️ بدّل المعلومات</button>
+      <button class="btn ghost" onclick="openPrivacy()">🔒 البيانات والخصوصية</button>
+    </div>
+  </section>
+
+  <!-- ░░ PRIVACY / DATA ░░ -->
+  <section class="screen" id="privacy" style="padding:0">
+    <div class="sub-head">
+      <button class="back" onclick="go('profile')">→</button>
+      <h2>البيانات والخصوصية</h2>
+    </div>
+    <div class="prof">
+      <div class="row"><div class="lbl">شنو كنجمعو</div><div class="val sm">السمية، المدينة، الصنعة + تسجيل الصوت</div></div>
+      <div class="row"><div class="lbl">فين كيتسجلو</div><div class="val sm">فقط ف التيليفون ديالك — ماشي عندنا قاع</div></div>
+      <div class="row"><div class="lbl">الصوت</div><div class="val sm">كيتصيفط لـ Google باش يتفهم، ومن بعد ما كيتسجلش</div></div>
+      <div class="row"><div class="lbl">الحقوق ديالك</div><div class="val sm">تسمع، تبدّل، ولا تمسح المعلومات فأي وقت</div></div>
+      <button class="btn green" onclick="playPrivacy()">🔊 اسمع التوضيح</button>
+      <button class="btn" style="background:var(--orange-active)" onclick="deleteData()">🗑️ مسح المعلومات ديالي</button>
     </div>
   </section>
 
@@ -397,6 +431,30 @@ function openProfile(){
   go('profile');
 }
 
+/* ── Consent & privacy (CNDP / loi 09-08) ── */
+const PRIVACY_TEXT='المعلومات ديالك كيتسجلو فقط ف التيليفون ديالك، ماشي عندنا. الصوت كيتصيفط لـ Google باش يتفهم ومن بعد ما كيتسجلش. تقدر تسمع، تبدّل، ولا تمسح المعلومات ديالك فأي وقت.';
+function playConsent(){
+  const b=document.getElementById('consent-play');
+  if(speaking||currentAudio){stopAllAudio();setBtn(b,'idle');return;}
+  setBtn(b,'loading');
+  ttsPlay(document.getElementById('consent-text').textContent,
+    {onStart:()=>setBtn(b,'playing'),onEnd:()=>setBtn(b,'idle')});
+}
+function acceptConsent(){
+  save('maalem_consent',true);
+  stopAllAudio();
+  if(profile.name){ setupHome(); go('home'); } else { go('welcome'); }
+}
+function openPrivacy(){ go('privacy'); playPrivacy(); }
+function playPrivacy(){ ttsPlay(PRIVACY_TEXT); }
+function deleteData(){
+  try{localStorage.removeItem('maalem_profile');localStorage.removeItem('maalem_consent');}catch(e){}
+  profile.name='';profile.city='';profile.craft='';convo=[];lastReply='';
+  toast('تمسحو المعلومات ديالك 🗑️');
+  ttsPlay('تمسحو جميع المعلومات ديالك من هاد التيليفون.');
+  setTimeout(()=>go('consent'),900);
+}
+
 /* ── Text-to-speech (Gemini first, browser fallback) ── */
 let currentAudio=null, speaking=false;
 function stopAllAudio(){
@@ -506,7 +564,8 @@ function blobToBase64(blob){
 }
 
 /* ── Init ── */
-if(profile.name){ setupHome(); go('home'); }
+if(!load('maalem_consent',false)){ go('consent'); }       // ask consent first
+else if(profile.name){ setupHome(); go('home'); }
 else{ go('welcome'); }
 </script>
 </body>
