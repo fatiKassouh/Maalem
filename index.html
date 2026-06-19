@@ -45,8 +45,8 @@
 
   /* ── Welcome ── */
   #welcome{justify-content:center;align-items:center;text-align:center}
-  .tagline{margin:18px 0 0;font-size:20px;font-weight:700;color:var(--orange-deep);max-width:18ch}
-  .sub{margin:10px 0 0;color:var(--muted);font-size:15px;max-width:24ch;line-height:1.7}
+  .tagline{margin:18px auto 0;font-size:20px;font-weight:700;color:var(--orange-deep);max-width:20ch}
+  .sub{margin:10px auto 0;color:var(--muted);font-size:15px;max-width:26ch;line-height:1.7}
 
   /* ── Shared voice mic ── */
   .vmic{border:0;cursor:pointer;border-radius:50%;display:grid;place-items:center;color:#fff;position:relative;
@@ -433,13 +433,20 @@ function openProfile(){
 
 /* ── Consent & privacy (CNDP / loi 09-08) ── */
 const PRIVACY_TEXT='المعلومات ديالك كيتسجلو فقط ف التيليفون ديالك، ماشي عندنا. الصوت كيتصيفط لـ Google باش يتفهم ومن بعد ما كيتسجلش. تقدر تسمع، تبدّل، ولا تمسح المعلومات ديالك فأي وقت.';
+let consentHeard=false;
 function playConsent(){
   const b=document.getElementById('consent-play');
   if(speaking||currentAudio){stopAllAudio();setBtn(b,'idle');return;}
   setBtn(b,'loading');
   ttsPlay(document.getElementById('consent-text').textContent,
-    {onStart:()=>setBtn(b,'playing'),onEnd:()=>setBtn(b,'idle')});
+    {onStart:()=>{consentHeard=true;setBtn(b,'playing');},onEnd:()=>setBtn(b,'idle')});
 }
+// If the browser blocks autoplay on load, play the consent on the first tap.
+document.getElementById('consent').addEventListener('click',function(e){
+  if(consentHeard)return;
+  if(e.target.closest('#consent-play')||e.target.closest('.btn'))return;
+  playConsent();
+});
 function acceptConsent(){
   save('maalem_consent',true);
   stopAllAudio();
@@ -564,7 +571,7 @@ function blobToBase64(blob){
 }
 
 /* ── Init ── */
-if(!load('maalem_consent',false)){ go('consent'); }       // ask consent first
+if(!load('maalem_consent',false)){ go('consent'); setTimeout(playConsent,350); }  // consent + auto voice
 else if(profile.name){ setupHome(); go('home'); }
 else{ go('welcome'); }
 </script>
