@@ -35,6 +35,18 @@ self.addEventListener('fetch', event => {
   // Only handle GET requests to avoid API issues (like POST /api/chat)
   if (event.request.method !== 'GET') return;
 
+  const url = new URL(event.request.url);
+  
+  // If requesting /Maalem.dc, serve the cached /Maalem.dc.html
+  if (url.pathname === '/Maalem.dc') {
+    event.respondWith(
+      caches.match('/Maalem.dc.html').then(cached => {
+        return cached || fetch(event.request);
+      })
+    );
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(cached => {
       return cached || fetch(event.request);

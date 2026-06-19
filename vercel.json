@@ -3,6 +3,10 @@
   "cleanUrls": true,
   "rewrites": [
     {
+      "source": "/Maalem.dc",
+      "destination": "/Maalem.dc.html"
+    },
+    {
       "source": "/((?!api/)(?!.*\\.).*)",
       "destination": "/Maalem.dc.html"
     }
