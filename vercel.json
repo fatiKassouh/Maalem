@@ -1,26 +1,4 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/Maalem.dc",
-      "permanent": true
-    },
-    {
-      "source": "/index.html",
-      "destination": "/Maalem.dc",
-      "permanent": true
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/Maalem.dc",
-      "destination": "/Maalem.dc.html"
-    },
-    {
-      "source": "/((?!api/)(?!.*\\.).*)",
-      "destination": "/Maalem.dc.html"
-    }
-  ]
+  "cleanUrls": true
 }

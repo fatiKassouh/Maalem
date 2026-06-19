@@ -1,20 +1,11 @@
 {
   "name": "maalem",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
   "dependencies": {
     "dotenv": "^16.4.5"
   },
-  "scripts": {
-    "dev": "npx serve .",
-    "dev:vercel": "npx vercel dev",
-    "start": "npx serve .",
-    "vercel-build": "echo 'No build needed'"
-  },
-  "devDependencies": {
-    "vercel": "^54.14.2"
-  },
   "engines": {
-    "node": "22.x"
+    "node": "20.x"
   }
 }
