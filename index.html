@@ -10,181 +10,133 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    /* ── Palette (from the design brief) ─────────────────────── */
-    --orange:#f26638;
-    --orange-hover:#da5c32;
-    --orange-active:#c2522d;
-    --orange-deep:#552414;
-    --orange-tint:#fef0eb;
-    --orange-tint2:#fde8e1;
-    --orange-tint3:#fbd0c1;
-    --green:#00a991;
-    --green-hover:#009883;
-    --green-deep:#003b33;
-    --green-tint:#e6f6f4;
-    --green-tint2:#d9f2ef;
-    --tan:#faa864;
-    --cream:#fff6f0;
-    --ink:#3a2014;
-    --muted:#9a7d6e;
-    --card:#ffffff;
-    --line:#f1e2d8;
-    --radius:22px;
-    --shadow:0 18px 50px -22px rgba(85,36,20,.45);
-    --shadow-sm:0 8px 24px -12px rgba(85,36,20,.35);
+    --orange:#f26638; --orange-hover:#da5c32; --orange-active:#c2522d; --orange-deep:#552414;
+    --orange-tint:#fef0eb; --orange-tint2:#fde8e1; --orange-tint3:#fbd0c1;
+    --green:#00a991; --green-hover:#009883; --green-deep:#003b33; --green-tint:#e6f6f4; --green-tint2:#d9f2ef;
+    --tan:#faa864; --cream:#fff6f0; --ink:#3a2014; --muted:#9a7d6e; --card:#ffffff; --line:#f1e2d8;
+    --radius:22px; --shadow:0 18px 50px -22px rgba(85,36,20,.45); --shadow-sm:0 8px 24px -12px rgba(85,36,20,.35);
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;height:100%}
-  body{
-    font-family:'Cairo',system-ui,sans-serif;
-    color:var(--ink);
-    background:var(--cream);
-    overflow:hidden;
-  }
-  /* Zellige motif — the Moroccan signature, kept very quiet */
-  .zellige{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    opacity:.05;
+  body{font-family:'Cairo',system-ui,sans-serif;color:var(--ink);background:var(--cream);overflow:hidden}
+
+  .zellige{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
     background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%23552414' stroke-width='2'><path d='M60 4 74 46 116 60 74 74 60 116 46 74 4 60 46 46Z'/><circle cx='60' cy='60' r='20'/><rect x='46' y='46' width='28' height='28' transform='rotate(45 60 60)'/></g></svg>");
-    background-size:150px 150px;
-  }
+    background-size:150px 150px;}
 
-  #app{
-    position:relative;z-index:1;
-    height:100dvh;width:100%;max-width:460px;margin:0 auto;
-    display:flex;flex-direction:column;overflow:hidden;
-  }
+  #app{position:relative;z-index:1;height:100dvh;width:100%;max-width:460px;margin:0 auto;
+    display:flex;flex-direction:column;overflow:hidden}
 
-  /* ── Screens ─────────────────────────────────────────────── */
-  .screen{
-    position:absolute;inset:0;display:flex;flex-direction:column;
-    padding:max(28px,env(safe-area-inset-top)) 24px 28px;
-    opacity:0;transform:translateY(14px);pointer-events:none;
-    transition:opacity .45s ease,transform .45s ease;
-  }
+  .screen{position:absolute;inset:0;display:flex;flex-direction:column;
+    padding:max(24px,env(safe-area-inset-top)) 24px 24px;
+    opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .4s ease,transform .4s ease}
   .screen.active{opacity:1;transform:none;pointer-events:auto}
 
-  /* ── Wordmark ────────────────────────────────────────────── */
-  .mark{display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1}
-  .mark .ar{font-weight:900;letter-spacing:.02em}
-  .mark .lat{font-family:'Jost',sans-serif;font-weight:600;letter-spacing:.42em;
-    text-transform:uppercase;color:var(--orange);padding-inline-start:.42em}
+  /* ── Buttons ── */
+  .btn{appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;font-size:18px;
+    border-radius:18px;padding:16px 26px;width:100%;background:var(--orange);color:#fff;
+    box-shadow:var(--shadow-sm);transition:background .15s,transform .1s}
+  .btn:hover{background:var(--orange-hover)} .btn:active{transform:translateY(1px)}
+  .btn.ghost{background:transparent;color:var(--muted);box-shadow:none;font-weight:600;font-size:15px}
+  .btn.green{background:var(--green)} .btn.green:hover{background:var(--green-hover)}
+  .stack{margin-top:auto;display:flex;flex-direction:column;gap:8px;width:100%}
 
-  /* ── Welcome ─────────────────────────────────────────────── */
-  #welcome{justify-content:center;align-items:center;text-align:center;gap:0}
-  .badge{
-    width:128px;height:128px;border-radius:36px;display:grid;place-items:center;
-    background:linear-gradient(150deg,var(--orange),var(--tan));
-    box-shadow:var(--shadow);margin-bottom:30px;position:relative;
-    animation:floaty 5s ease-in-out infinite;
-  }
-  @keyframes floaty{50%{transform:translateY(-9px)}}
-  .badge .ar{color:#fff;font-size:54px;font-weight:900}
-  #welcome .mark .ar{font-size:40px;color:var(--orange-deep)}
-  #welcome .mark .lat{font-size:13px;margin-top:4px}
-  .tagline{margin:18px 0 0;font-size:18px;font-weight:600;color:var(--orange-deep);max-width:18ch}
+  .brand-logo{width:160px;height:auto;display:block;margin:0 auto 6px}
+
+  /* ── Welcome ── */
+  #welcome{justify-content:center;align-items:center;text-align:center}
+  .tagline{margin:18px 0 0;font-size:20px;font-weight:700;color:var(--orange-deep);max-width:18ch}
   .sub{margin:10px 0 0;color:var(--muted);font-size:15px;max-width:24ch;line-height:1.7}
 
-  /* ── Buttons ─────────────────────────────────────────────── */
-  .btn{
-    appearance:none;border:0;cursor:pointer;font-family:inherit;font-weight:700;
-    font-size:18px;border-radius:18px;padding:16px 26px;width:100%;
-    background:var(--orange);color:#fff;box-shadow:var(--shadow-sm);
-    transition:background .15s,transform .1s;
-  }
-  .btn:hover{background:var(--orange-hover)}
-  .btn:active{background:var(--orange-active);transform:translateY(1px)}
-  .btn:disabled{background:var(--orange-tint3);color:#fff;cursor:default;box-shadow:none}
-  .btn.ghost{background:transparent;color:var(--muted);box-shadow:none;font-weight:600;font-size:15px}
-  .btn.ghost:hover{color:var(--orange-deep)}
-  .stack{margin-top:auto;display:flex;flex-direction:column;gap:6px;width:100%}
+  /* ── Shared voice mic ── */
+  .vmic{border:0;cursor:pointer;border-radius:50%;display:grid;place-items:center;color:#fff;position:relative;
+    background:radial-gradient(circle at 50% 38%,var(--tan),var(--orange) 55%,var(--orange-active));
+    transition:.2s}
+  .vmic.big{width:154px;height:154px;box-shadow:0 0 0 14px var(--orange-tint),0 22px 50px -16px rgba(242,102,56,.65);
+    animation:floaty 5s ease-in-out infinite}
+  .vmic.md{width:118px;height:118px;box-shadow:0 0 0 11px var(--orange-tint),0 18px 40px -16px rgba(242,102,56,.55)}
+  .vmic img{width:46%;height:46%;object-fit:contain;filter:brightness(0) invert(1)}
+  .vmic svg{width:42%;height:42%;fill:#fff}
+  .vmic.listening{background:radial-gradient(circle at 50% 38%,#ffb184,#ff7a4d 55%,var(--orange-active));animation:pulsering 1.1s ease-in-out infinite}
+  .vmic.thinking img,.vmic.thinking svg{display:none}
+  .vmic.thinking::after{content:"";width:38%;height:38%;border-radius:50%;
+    border:5px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .8s linear infinite}
+  .vmic.speaking{animation:beat 1s ease-in-out infinite}
+  @keyframes floaty{50%{transform:translateY(-9px)}}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes beat{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+  @keyframes pulsering{0%,100%{box-shadow:0 0 0 12px var(--orange-tint),0 18px 40px -16px rgba(242,102,56,.6)}
+    50%{box-shadow:0 0 0 26px var(--orange-tint2),0 18px 40px -16px rgba(242,102,56,.6)}}
 
-  /* ── Onboarding ──────────────────────────────────────────── */
-  .top{display:flex;align-items:center;justify-content:space-between;margin-bottom:34px}
+  /* ── Onboarding ── */
+  #ob{align-items:center}
+  .top{display:flex;align-items:center;justify-content:space-between;width:100%;margin-bottom:10px}
   .dots{display:flex;gap:7px}
   .dot{width:9px;height:9px;border-radius:50%;background:var(--orange-tint3);transition:.3s}
   .dot.on{background:var(--orange);width:26px;border-radius:5px}
-  .q{font-size:27px;font-weight:800;color:var(--orange-deep);line-height:1.4;margin:0 0 8px}
-  .q-sub{color:var(--muted);font-size:15px;margin:0 0 26px}
-  .field{
-    width:100%;font-family:inherit;font-size:19px;color:var(--ink);
-    background:var(--card);border:2px solid var(--line);border-radius:18px;
-    padding:17px 20px;outline:none;transition:border-color .15s,box-shadow .15s;
-  }
-  .field::placeholder{color:#c9b3a6}
-  .field:focus{border-color:var(--orange);box-shadow:0 0 0 4px var(--orange-tint)}
-
-  /* ── Craft grid ──────────────────────────────────────────── */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;overflow-y:auto;padding:2px;margin:0 -2px}
-  .craft{
-    background:var(--card);border:2px solid var(--line);border-radius:18px;
-    padding:18px 10px;display:flex;flex-direction:column;align-items:center;gap:9px;
-    cursor:pointer;transition:.15s;font-weight:600;font-size:15px;color:var(--orange-deep);
-  }
-  .craft .ic{font-size:30px;line-height:1}
-  .craft:hover{border-color:var(--orange-tint3);transform:translateY(-2px)}
-  .craft.sel{border-color:var(--orange);background:var(--orange-tint);box-shadow:var(--shadow-sm)}
-
-  /* ── Chat ────────────────────────────────────────────────── */
-  #chat{padding:0}
-  .chat-head{
-    display:flex;align-items:center;gap:12px;padding:16px 20px;
-    padding-top:max(16px,env(safe-area-inset-top));
-    background:var(--card);border-bottom:1px solid var(--line);z-index:2;
-  }
-  .chat-head .av{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;
-    background:linear-gradient(150deg,var(--orange),var(--tan));color:#fff;font-weight:900;font-size:20px}
-  .chat-head .mark{align-items:flex-start}
-  .chat-head .mark .ar{font-size:20px;color:var(--orange-deep)}
-  .chat-head .mark .lat{font-size:9px;margin-top:1px}
-  .chat-head .status{margin-inline-start:auto;font-size:12px;color:var(--green);font-weight:700;
-    display:flex;align-items:center;gap:6px}
-  .chat-head .status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
-
-  .stream{flex:1;overflow-y:auto;padding:20px 18px 8px;display:flex;flex-direction:column;gap:12px}
-  .msg{max-width:82%;padding:13px 17px;border-radius:20px;font-size:16px;line-height:1.6;
-    animation:pop .25s ease;white-space:pre-wrap;word-break:break-word}
+  .ob-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;text-align:center}
+  .q{font-size:27px;font-weight:800;color:var(--orange-deep);line-height:1.4;margin:0;max-width:16ch}
+  .ob-hint{color:var(--muted);font-size:15px;margin:0}
+  .ob-answer{background:var(--green-tint);color:var(--green-deep);border-radius:18px;padding:14px 20px;
+    font-size:20px;font-weight:700;max-width:90%;animation:pop .25s ease}
   @keyframes pop{from{opacity:0;transform:translateY(8px)}}
+
+  /* ── Home (voice-first) ── */
+  #home{padding:0}
+  .home-top{display:flex;align-items:center;gap:10px;padding:16px 18px;
+    padding-top:max(16px,env(safe-area-inset-top));border-bottom:1px solid var(--line);background:var(--card)}
+  .home-logo{height:30px;width:auto}
+  .home-user{margin-left:auto;text-align:right;line-height:1.25}
+  .hu-name{font-weight:800;color:var(--orange-deep);font-size:15px}
+  .hu-craft{font-size:12px;color:var(--muted)}
+  .hu-av{width:42px;height:42px;border-radius:50%;background:var(--orange-tint);
+    display:grid;place-items:center;font-size:20px;flex:none}
+  .home-main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+    padding:20px 24px;text-align:center;position:relative}
+  .home-title{font-size:30px;font-weight:900;color:var(--green);margin:10px 0 0}
+  .home-sub{color:var(--muted);font-size:15px;max-width:24ch;margin:0;line-height:1.7}
+  .home-reply{display:flex;align-items:center;gap:10px;background:var(--green-tint);color:var(--green-deep);
+    border-radius:999px;padding:8px 8px 8px 16px;margin-top:6px;font-weight:600;font-size:14px}
+
+  .vplay{border:0;cursor:pointer;width:40px;height:40px;border-radius:50%;background:var(--green);color:#fff;
+    font-size:15px;display:grid;place-items:center;flex:none;transition:background .2s}
+  .vplay.playing{background:var(--orange-deep)!important;animation:beat 1s ease-in-out infinite}
+  .vplay .spin{width:15px;height:15px;border:2px solid rgba(255,255,255,.45);border-top-color:#fff;
+    border-radius:50%;display:inline-block;animation:spin .7s linear infinite}
+
+  /* ── Bottom nav ── */
+  .bottomnav{display:flex;justify-content:space-around;align-items:center;
+    padding:10px 14px;padding-bottom:max(10px,env(safe-area-inset-bottom));
+    background:var(--card);border-top:1px solid var(--line)}
+  .bottomnav button{border:0;background:transparent;cursor:pointer;color:var(--muted);
+    width:48px;height:48px;display:grid;place-items:center;border-radius:14px;transition:.15s}
+  .bottomnav button:hover{color:var(--orange)}
+  .bottomnav button svg{width:25px;height:25px;fill:currentColor}
+  .bottomnav .nav-mic{background:var(--orange);color:#fff;border-radius:50%;width:60px;height:60px;
+    box-shadow:0 10px 24px -8px rgba(242,102,56,.8);transform:translateY(-8px)}
+  .bottomnav .nav-mic:hover{color:#fff;background:var(--orange-hover)}
+  .bottomnav .nav-mic.listening{background:#ff7a4d;animation:beat 1.1s ease-in-out infinite}
+  .bottomnav .nav-mic svg{width:28px;height:28px}
+
+  /* ── History / Profile ── */
+  .sub-head{display:flex;align-items:center;gap:12px;padding:16px 18px;
+    padding-top:max(16px,env(safe-area-inset-top));border-bottom:1px solid var(--line);background:var(--card)}
+  .sub-head .back{border:0;background:var(--orange-tint);color:var(--orange-deep);width:40px;height:40px;
+    border-radius:12px;cursor:pointer;font-size:20px;display:grid;place-items:center}
+  .sub-head h2{margin:0;font-size:18px;color:var(--orange-deep)}
+  .stream{flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px}
+  .msg{max-width:82%;padding:12px 16px;border-radius:18px;font-size:15px;line-height:1.6;white-space:pre-wrap;word-break:break-word}
   .msg.bot{background:var(--green-tint);color:var(--green-deep);align-self:flex-start;border-bottom-right-radius:6px}
   .msg.me{background:var(--orange);color:#fff;align-self:flex-end;border-bottom-left-radius:6px}
-  .msg.bot.speaking{box-shadow:0 0 0 3px var(--green-tint2)}
-  .typing{display:flex;gap:5px;padding:16px 18px}
-  .typing span{width:8px;height:8px;border-radius:50%;background:var(--green);opacity:.4;animation:blink 1.2s infinite}
-  .typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
-  @keyframes blink{50%{opacity:1;transform:translateY(-3px)}}
+  .msg.bot .mini{margin-top:8px}
+  .prof{padding:22px;display:flex;flex-direction:column;gap:14px}
+  .prof .row{background:var(--card);border:2px solid var(--line);border-radius:16px;padding:14px 18px}
+  .prof .row .lbl{font-size:12px;color:var(--muted)} .prof .row .val{font-size:18px;font-weight:700;color:var(--orange-deep)}
 
-  .chips{display:flex;gap:8px;padding:4px 18px 10px;flex-wrap:wrap}
-  .chip{background:var(--orange-tint);color:var(--orange-deep);border:1px solid var(--orange-tint2);
-    border-radius:999px;padding:8px 15px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;transition:.15s}
-  .chip:hover{background:var(--orange-tint2)}
-
-  .bar{display:flex;align-items:center;gap:10px;padding:12px 16px;
-    padding-bottom:max(12px,env(safe-area-inset-bottom));
-    background:var(--card);border-top:1px solid var(--line)}
-  .bar input{flex:1;font-family:inherit;font-size:16px;color:var(--ink);background:var(--cream);
-    border:2px solid var(--line);border-radius:16px;padding:13px 17px;outline:none;transition:border-color .15s}
-  .bar input:focus{border-color:var(--orange)}
-  .icon-btn{flex:none;width:50px;height:50px;border-radius:16px;border:0;cursor:pointer;
-    display:grid;place-items:center;color:#fff;background:var(--orange);transition:.15s}
-  .icon-btn:hover{background:var(--orange-hover)}
-  .icon-btn:disabled{opacity:.4;cursor:default}
-  .icon-btn svg{width:22px;height:22px;fill:currentColor}
-
-  /* Mic — the signature voice control */
-  .mic{position:relative;background:var(--green)}
-  .mic:hover{background:var(--green-hover)}
-  .mic.live{background:var(--orange)}
-  .mic.live::after,.mic.live::before{content:"";position:absolute;inset:0;border-radius:16px;
-    border:2px solid var(--orange);animation:ring 1.4s ease-out infinite}
-  .mic.live::before{animation-delay:.5s}
-  @keyframes ring{from{opacity:.6;transform:scale(1)}to{opacity:0;transform:scale(1.7)}}
-  .mic.busy{background:var(--tan)}
-  .mic.busy svg{display:none}
-  .mic.busy::before{content:"";position:absolute;width:20px;height:20px;border-radius:50%;
-    border:3px solid rgba(255,255,255,.4);border-top-color:#fff;animation:spin .7s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  .err{font-size:13px;color:var(--orange-active);text-align:center;padding:0 18px 6px}
+  .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%);z-index:50;
+    background:var(--orange-deep);color:#fff;padding:11px 18px;border-radius:14px;font-size:14px;
+    box-shadow:var(--shadow);opacity:0;transition:opacity .25s;max-width:80%;text-align:center}
+  .toast.show{opacity:1}
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -195,252 +147,307 @@
 
   <!-- ░░ WELCOME ░░ -->
   <section class="screen active" id="welcome">
-    <div class="badge"><span class="ar">م</span></div>
-    <div class="mark"><span class="ar">المعلم</span><span class="lat">Maalem</span></div>
-    <p class="tagline">مرحبا بيك في المعلم</p>
-    <p class="sub">رفيقك الصوتي للصنعة المغربية — كنعاونك تلقا الفيران، تبيع، وتطور خدمتك.</p>
+    <div style="margin:auto 0">
+      <img class="brand-logo" src="maalem-logo.png" alt="المعلم Maalem">
+      <p class="tagline">مرحبا بيك في المعلم</p>
+      <p class="sub">رفيقك الصوتي للصنعة المغربية — كنهضرو بالداريجة، بلا ما تكتب والو.</p>
+    </div>
     <div class="stack">
-      <button class="btn" onclick="go('ob')">يلا نبداو</button>
+      <button class="btn" onclick="startOb()">🎙️ يلا نبداو بالصوت</button>
     </div>
   </section>
 
-  <!-- ░░ ONBOARDING ░░ -->
+  <!-- ░░ ONBOARDING (voice) ░░ -->
   <section class="screen" id="ob">
     <div class="top">
       <div class="dots"><i class="dot on"></i><i class="dot"></i><i class="dot"></i></div>
-      <button class="btn ghost" style="width:auto;padding:6px 4px" onclick="startChat()">تخطّى</button>
+      <button class="btn ghost" style="width:auto;padding:6px 4px" onclick="skipOb()">تخطّى</button>
     </div>
-
-    <div id="step-name">
-      <h2 class="q">بغيت نعرف شنو سميتك؟</h2>
-      <p class="q-sub">باش نهضر معاك بصفة شخصية.</p>
-      <input class="field" id="in-name" placeholder="كتب سميتك هنا" autocomplete="off">
+    <div class="ob-body">
+      <h2 class="q" id="ob-q">…</h2>
+      <button class="vmic md" id="obmic" onclick="obRecord()" aria-label="كبس وتكلم">
+        <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg>
+      </button>
+      <p class="ob-hint" id="ob-hint">كبس على الميكرو وتكلم</p>
+      <div class="ob-answer" id="ob-answer" hidden><span id="ob-answer-text"></span></div>
     </div>
-
-    <div id="step-city" hidden>
-      <h2 class="q">فين كاتخدم؟</h2>
-      <p class="q-sub">باش نلقا ليك الفيران والأسواق القريبة منك.</p>
-      <input class="field" id="in-city" placeholder="مثلا: فاس، مراكش، الدار البيضاء…" autocomplete="off">
-    </div>
-
-    <div id="step-craft" hidden>
-      <h2 class="q">أشنو هي الصنعة ديالك؟</h2>
-      <p class="q-sub">ختار اللي كتمارس.</p>
-      <div class="grid" id="craft-grid"></div>
-    </div>
-
-    <div class="stack">
-      <button class="btn" id="ob-next" onclick="obNext()">التالي →</button>
+    <div class="stack" id="ob-actions" hidden>
+      <button class="btn green" onclick="obConfirm()">✓ صحيح، كمّل</button>
+      <button class="btn ghost" onclick="obRedo()">↺ عاود التسجيل</button>
     </div>
   </section>
 
-  <!-- ░░ CHAT ░░ -->
-  <section class="screen" id="chat">
-    <div class="chat-head">
-      <div class="av">م</div>
-      <div class="mark"><span class="ar">المعلم</span><span class="lat">Maalem</span></div>
-      <span class="status">مْتّصل</span>
-    </div>
-    <div class="stream" id="stream"></div>
-    <div class="chips" id="chips">
-      <button class="chip" onclick="quick('وريني شي فيران قريبة مني')">الفيران</button>
-      <button class="chip" onclick="quick('كيفاش نبيع الخدمة ديالي ف السوق؟')">السوق</button>
-      <button class="chip" onclick="quick('بغيت نصدّر الصنعة ديالي للخارج')">التصدير</button>
-    </div>
-    <div class="err" id="err"></div>
-    <div class="bar">
-      <button class="icon-btn mic" id="mic" title="اضغط وتكلم" onclick="toggleMic()" aria-label="اضغط وتكلم">
+  <!-- ░░ HOME (voice-first) ░░ -->
+  <section class="screen" id="home">
+    <header class="home-top" dir="ltr">
+      <img class="home-logo" src="maalem-logo.png" alt="Maalem">
+      <div class="home-user" dir="rtl">
+        <div class="hu-name" id="hu-name">مرحبا!</div>
+        <div class="hu-craft" id="hu-craft"></div>
+      </div>
+      <div class="hu-av">🧑‍🔧</div>
+    </header>
+
+    <main class="home-main">
+      <button class="vmic big" id="bigmic" onclick="homeMic()" aria-label="تكلم دابا">
+        <img src="maalem-mark.png" alt="">
+      </button>
+      <h1 class="home-title" id="home-title">تكلم دابا</h1>
+      <p class="home-sub" id="home-sub">كبس على الميكرو وسولني على المعارض، السوق، ولا التصدير.</p>
+      <div class="home-reply" id="home-reply" hidden>
+        <button class="vplay" id="reply-play" onclick="replayLast()">▶︎</button>
+        <span>🔊 سمع الجواب</span>
+      </div>
+    </main>
+
+    <nav class="bottomnav">
+      <button onclick="toast('قريباً 🔔')" aria-label="إشعارات">
+        <svg viewBox="0 0 24 24"><path d="M12 22a2 2 0 002-2h-4a2 2 0 002 2zm6-6v-5a6 6 0 00-5-5.91V4a1 1 0 10-2 0v1.09A6 6 0 006 11v5l-2 2v1h16v-1l-2-2z"/></svg>
+      </button>
+      <button onclick="openHistory()" aria-label="المحادثة">
+        <svg viewBox="0 0 24 24"><path d="M20 2H4a2 2 0 00-2 2v18l4-4h14a2 2 0 002-2V4a2 2 0 00-2-2z"/></svg>
+      </button>
+      <button class="nav-mic" id="navmic" onclick="homeMic()" aria-label="تكلم">
         <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg>
       </button>
-      <input id="in-chat" placeholder="تكلم دابا… Pose ta question en Darija" autocomplete="off">
-      <button class="icon-btn" id="send" onclick="send()" aria-label="صيفط">
-        <svg viewBox="0 0 24 24"><path d="M3 20.5v-6l9-2.5-9-2.5v-6l19 8.5z"/></svg>
+      <button onclick="toast('قريباً 📅')" aria-label="المواعيد">
+        <svg viewBox="0 0 24 24"><path d="M19 4h-1V2h-2v2H8V2H6v2H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2zm0 16H5V10h14v10z"/></svg>
       </button>
+      <button onclick="openProfile()" aria-label="حسابي">
+        <svg viewBox="0 0 24 24"><path d="M12 12a5 5 0 100-10 5 5 0 000 10zm0 2c-5 0-9 2.5-9 6v2h18v-2c0-3.5-4-6-9-6z"/></svg>
+      </button>
+    </nav>
+  </section>
+
+  <!-- ░░ HISTORY ░░ -->
+  <section class="screen" id="history" style="padding:0">
+    <div class="sub-head">
+      <button class="back" onclick="go('home')">→</button>
+      <h2>المحادثة</h2>
+    </div>
+    <div class="stream" id="stream"></div>
+  </section>
+
+  <!-- ░░ PROFILE ░░ -->
+  <section class="screen" id="profile" style="padding:0">
+    <div class="sub-head">
+      <button class="back" onclick="go('home')">→</button>
+      <h2>حسابي</h2>
+    </div>
+    <div class="prof">
+      <div class="row"><div class="lbl">السمية</div><div class="val" id="pf-name">—</div></div>
+      <div class="row"><div class="lbl">المدينة</div><div class="val" id="pf-city">—</div></div>
+      <div class="row"><div class="lbl">الصنعة</div><div class="val" id="pf-craft">—</div></div>
+      <button class="btn ghost" onclick="startOb()">🎙️ بدّل المعلومات</button>
     </div>
   </section>
 
 </div>
+<div class="toast" id="toast"></div>
 
 <script>
-/* ── State ──────────────────────────────────────────────────── */
+/* ── State & storage ── */
 const profile = load('maalem_profile', {name:'', city:'', craft:''});
-let convo = [];                 // {role:'me'|'bot', text}
-let obStep = 0;
-const steps = ['name','city','craft'];
-
-const CRAFTS = [
-  ['الزليج','◆'],['الجلد','👜'],['النسيج','🧵'],['الخشب','🪵'],
-  ['المجوهرات','💍'],['الخزف','🏺'],['التطريز','🪡'],['أخرى','✦']
+let convo = [];                  // {role:'me'|'bot', text}
+let obStep = 0, obPending = '';
+let lastReply = '';
+const OB_STEPS = [
+  {key:'name',  q:'شنو سميتك؟'},
+  {key:'city',  q:'فين كاتسكن ولا كاتخدم؟'},
+  {key:'craft', q:'أشنو هي الصنعة ديالك؟'}
 ];
 
-/* ── Storage helpers (safe — degrade in sandboxed previews) ──── */
 function load(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){return d}}
 function save(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}
 
-/* ── Screen routing ─────────────────────────────────────────── */
 function go(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-/* ── Onboarding ─────────────────────────────────────────────── */
-const grid=document.getElementById('craft-grid');
-CRAFTS.forEach(([name,ic])=>{
-  const b=document.createElement('button');
-  b.className='craft';b.innerHTML=`<span class="ic">${ic}</span>${name}`;
-  b.onclick=()=>{document.querySelectorAll('.craft').forEach(c=>c.classList.remove('sel'));
-    b.classList.add('sel');profile.craft=name;};
-  if(profile.craft===name)b.classList.add('sel');
-  grid.appendChild(b);
-});
-document.getElementById('in-name').value=profile.name;
-document.getElementById('in-city').value=profile.city;
+let toastTimer=null;
+function toast(msg){
+  const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2200);
+}
 
-function setStep(i){
-  obStep=i;
-  steps.forEach((s,idx)=>document.getElementById('step-'+s).hidden=(idx!==i));
+/* ── Onboarding (voice) ── */
+function startOb(){ go('ob'); enterStep(0); }
+function skipOb(){ setupHome(); go('home'); }
+
+function enterStep(i){
+  obStep=i; const step=OB_STEPS[i];
+  document.getElementById('ob-q').textContent=step.q;
   document.querySelectorAll('#ob .dot').forEach((d,idx)=>d.classList.toggle('on',idx<=i));
-  document.getElementById('ob-next').textContent = i===steps.length-1 ? 'يلا نبداو الهضرة' : 'التالي →';
+  obRedo();
+  ttsPlay(step.q);                 // ask the question out loud
 }
-function obNext(){
-  if(obStep===0)profile.name=document.getElementById('in-name').value.trim();
-  if(obStep===1)profile.city=document.getElementById('in-city').value.trim();
-  save('maalem_profile',profile);
-  if(obStep<steps.length-1){setStep(obStep+1);
-    const f=document.querySelector('#step-'+steps[obStep]+' .field');if(f)f.focus();}
-  else startChat();
+function setObMic(state){
+  const b=document.getElementById('obmic');
+  b.classList.remove('listening','thinking','speaking');
+  if(state)b.classList.add(state);
+  const hint={listening:'كنسمع ليك… كبس باش تسالي',thinking:'كنحوّل الصوت…',idle:'كبس على الميكرو وتكلم'};
+  document.getElementById('ob-hint').textContent=hint[state]||hint.idle;
+}
+function obRecord(){
+  if(recording){stopRec();setObMic('idle');return;}
+  setObMic('listening');
+  startRec({onProcessing:()=>setObMic('thinking'),onResult:obGotAnswer,
+    onError:()=>{setObMic('idle');toast('ما سمعتش مزيان، عاود من فضلك');}});
+}
+function obGotAnswer(text){
+  setObMic('idle'); obPending=text;
+  document.getElementById('ob-answer-text').textContent=text;
+  document.getElementById('ob-answer').hidden=false;
+  document.getElementById('ob-actions').hidden=false;
+  ttsPlay(text);                   // play back what we understood
+}
+function obConfirm(){
+  if(!obPending){toast('تكلم الأول 🎙️');return;}
+  profile[OB_STEPS[obStep].key]=obPending; save('maalem_profile',profile);
+  if(obStep<OB_STEPS.length-1){ enterStep(obStep+1); }
+  else{ setupHome(); go('home'); homeGreeting(); }
+}
+function obRedo(){
+  obPending='';
+  document.getElementById('ob-answer').hidden=true;
+  document.getElementById('ob-actions').hidden=true;
+  setObMic('idle');
 }
 
-/* ── Chat boot ──────────────────────────────────────────────── */
-function startChat(){
-  save('maalem_profile',profile);
-  go('chat');
-  if(convo.length===0){
-    const name=profile.name||'صاحبي';
-    const city=profile.city;
-    const greet = city
-      ? `مرحبا ${name}! 👋 واش بغيتي تشوف شي فيران قريبة من ${city}؟`
-      : `مرحبا ${name}! 👋 ديما أنا هنا — سولني على الفيران، السوق، ولا التصدير.`;
-    addMsg('bot',greet);
-  }
-  setTimeout(()=>document.getElementById('in-chat').focus(),300);
+/* ── Home ── */
+function setupHome(){
+  document.getElementById('hu-name').textContent = profile.name ? ('مرحبا '+profile.name+' 👋') : 'مرحبا 👋';
+  document.getElementById('hu-craft').textContent = profile.craft || '';
+}
+function homeGreeting(){
+  const g = profile.city
+    ? `مرحبا ${profile.name||'صاحبي'}! واش بغيتي تشوف شي معرض ولا سوق قريب من ${profile.city}؟`
+    : `مرحبا ${profile.name||'صاحبي'}! كبس على الميكرو وسولني اللي بغيتي.`;
+  document.getElementById('home-sub').textContent=g;
+  ttsPlay(g);
+}
+function setHome(state){
+  const big=document.getElementById('bigmic'), nav=document.getElementById('navmic');
+  [big].forEach(b=>b.classList.remove('listening','thinking','speaking'));
+  nav.classList.remove('listening');
+  if(state==='listening'){big.classList.add('listening');nav.classList.add('listening');}
+  else if(state)big.classList.add(state);
+  const titles={idle:'تكلم دابا',listening:'كنسمع ليك…',thinking:'كنفكّر…',speaking:'ها الجواب 🔊'};
+  document.getElementById('home-title').textContent=titles[state]||titles.idle;
+}
+function homeMic(){
+  if(recording){stopRec();setHome('idle');return;}
+  document.getElementById('home-reply').hidden=true;
+  setHome('listening');
+  startRec({onProcessing:()=>setHome('thinking'),onResult:sendChat,
+    onError:()=>{setHome('idle');toast('ما سمعتش مزيان، عاود من فضلك');}});
 }
 
-/* ── Messages ───────────────────────────────────────────────── */
-const stream=document.getElementById('stream');
-function addMsg(role,text){
-  convo.push({role,text});
-  const el=document.createElement('div');
-  el.className='msg '+role;el.textContent=text;
-  stream.appendChild(el);stream.scrollTop=stream.scrollHeight;
-  return el;
-}
-function showTyping(){
-  const t=document.createElement('div');t.className='msg bot typing';t.id='typing';
-  t.innerHTML='<span></span><span></span><span></span>';
-  stream.appendChild(t);stream.scrollTop=stream.scrollHeight;
-}
-function hideTyping(){const t=document.getElementById('typing');if(t)t.remove();}
-
-function quick(t){document.getElementById('in-chat').value=t;send();}
-
-/* ── Send to backend ────────────────────────────────────────── */
-async function send(){
-  const input=document.getElementById('in-chat');
-  const text=input.value.trim();if(!text)return;
-  document.getElementById('err').textContent='';
-  input.value='';addMsg('me',text);
-  document.getElementById('send').disabled=true;
-  showTyping();
-
-  // Hidden context turn so Gemini knows who it's talking to (not rendered)
-  const ctx={role:'user',text:`(سياق المستخدم — ما تعاودوش: السمية ${profile.name||'؟'}، المدينة ${profile.city||'؟'}، الصنعة ${profile.craft||'؟'}. جاوب بالدارجة المغربية بالحروف العربية.)`};
+async function sendChat(text){
+  convo.push({role:'me',text});
+  setHome('thinking');
+  const ctx={role:'user',text:`(سياق المستخدم — ما تعاودوش: السمية ${profile.name||'؟'}، المدينة ${profile.city||'؟'}، الصنعة ${profile.craft||'؟'}. جاوب بالدارجة المغربية بالحروف العربية، وبجمل قصيرة باش يتسمعو مزيان.)`};
   const payload=[ctx,...convo].map(m=>({role:m.role==='me'?'user':'bot',text:m.text}));
-
   try{
-    const res=await fetch('/api/chat',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({messages:payload,lang:'ar'})
-    });
-    hideTyping();
-    if(!res.ok){throw new Error('server');}
+    const res=await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({messages:payload,lang:'ar'})});
     const data=await res.json();
-    if(data.error)throw new Error(data.error);
+    if(!res.ok||data.error)throw new Error(data.error||'server');
     const reply=data.audioText||data.text||'…';
-    const el=addVoiceMsg('bot',reply);
-    playReply(reply,el);
+    convo.push({role:'bot',text:reply});
+    lastReply=reply;
+    document.getElementById('home-reply').hidden=false;
+    setHome('speaking');
+    ttsPlay(reply,{onEnd:()=>setHome('idle')});
   }catch(e){
-    hideTyping();
-    document.getElementById('err').textContent='ما قدرناش نوصلو للخادم. تأكد بلي الموقع متّصل بالإنترنت وأن مفتاح Gemini مضبوط.';
-  }finally{
-    document.getElementById('send').disabled=false;
-    input.focus();
+    setHome('idle');
+    toast('ما قدرناش نوصلو للخادم. تأكد من الإنترنت ومفتاح Gemini.');
   }
 }
-document.getElementById('in-chat').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
 
-/* ── Voice OUT (audio-only replies) ─────────────────────────────
-   The bot answers with a voice bubble (no visible text). We try server-side
-   Gemini TTS first (works on every device); if that is not available we fall
-   back to the browser voice. The text is kept on the element so it can be
-   replayed and so the conversation context stays intact. */
-let currentAudio=null;
-function addVoiceMsg(role,text){
-  convo.push({role,text});
-  const el=document.createElement('div');
-  el.className='msg '+role+' voice';
-  el.dataset.text=text;
-  el.innerHTML='<button class="vplay" type="button" aria-label="استمع للرد">▶︎</button>'
-    +'<span class="vlabel">🔊 رسالة صوتية</span>';
-  // light inline styling so it looks like a voice note
-  el.style.display='flex';el.style.alignItems='center';el.style.gap='10px';
-  const btn=el.querySelector('.vplay');
-  btn.style.cssText='border:0;cursor:pointer;width:34px;height:34px;border-radius:50%;'
-    +'background:var(--green,#1aa87a);color:#fff;font-size:14px;flex:0 0 auto;';
-  el.querySelector('.vlabel').style.cssText='font-size:13px;opacity:.85;';
-  btn.addEventListener('click',()=>playReply(text,el));
-  stream.appendChild(el);stream.scrollTop=stream.scrollHeight;
-  return el;
+/* replay last answer with button state */
+function replayLast(){
+  if(!lastReply)return;
+  const btn=document.getElementById('reply-play');
+  if(currentAudio||speaking){stopAllAudio();setBtn(btn,'idle');setHome('idle');return;}
+  setBtn(btn,'loading');setHome('speaking');
+  ttsPlay(lastReply,{onStart:()=>setBtn(btn,'playing'),onEnd:()=>{setBtn(btn,'idle');setHome('idle');}});
+}
+function setBtn(btn,state){
+  if(!btn)return;btn.classList.remove('playing');
+  if(state==='loading')btn.innerHTML='<span class="spin"></span>';
+  else if(state==='playing'){btn.classList.add('playing');btn.innerHTML='⏸';}
+  else btn.innerHTML='▶︎';
 }
 
-async function playReply(text,el){
-  if(!text)return;
+/* ── History & Profile ── */
+function openHistory(){
+  const s=document.getElementById('stream');s.innerHTML='';
+  if(!convo.length){s.innerHTML='<p style="color:var(--muted);text-align:center;margin:auto">ما كاينة حتى محادثة دابا.</p>';}
+  convo.forEach(m=>{
+    const el=document.createElement('div');el.className='msg '+(m.role==='me'?'me':'bot');
+    el.textContent=m.text;
+    if(m.role==='bot'){
+      const b=document.createElement('button');b.className='vplay mini';b.textContent='▶︎';
+      b.style.marginTop='8px';
+      b.onclick=()=>{setBtn(b,'loading');ttsPlay(m.text,{onStart:()=>setBtn(b,'playing'),onEnd:()=>setBtn(b,'idle')});};
+      el.appendChild(document.createElement('br'));el.appendChild(b);
+    }
+    s.appendChild(el);
+  });
+  s.scrollTop=s.scrollHeight; go('history');
+}
+function openProfile(){
+  document.getElementById('pf-name').textContent=profile.name||'—';
+  document.getElementById('pf-city').textContent=profile.city||'—';
+  document.getElementById('pf-craft').textContent=profile.craft||'—';
+  go('profile');
+}
+
+/* ── Text-to-speech (Gemini first, browser fallback) ── */
+let currentAudio=null, speaking=false;
+function stopAllAudio(){
   try{if(currentAudio){currentAudio.pause();currentAudio=null;}}catch(e){}
   try{speechSynthesis.cancel();}catch(e){}
-  if(el)el.classList.add('speaking');
-  const done=()=>{if(el)el.classList.remove('speaking');};
+  speaking=false;
+}
+async function ttsPlay(text,opts){
+  opts=opts||{};
+  stopAllAudio();
+  if(!text)return;
   try{
-    const res=await fetch('/api/tts',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({text})
-    });
+    const res=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({text})});
     if(!res.ok)throw new Error('tts');
     const data=await res.json();
     if(!data.audio)throw new Error('noaudio');
     const url=URL.createObjectURL(pcmToWav(data.audio,data.rate||24000));
-    const audio=new Audio(url);currentAudio=audio;
-    audio.onended=()=>{done();URL.revokeObjectURL(url);};
+    const audio=new Audio(url);currentAudio=audio;speaking=true;
+    audio.onplaying=()=>{if(opts.onStart)opts.onStart();};
+    audio.onended=()=>{speaking=false;currentAudio=null;if(opts.onEnd)opts.onEnd();URL.revokeObjectURL(url);};
+    audio.onerror=()=>{speaking=false;currentAudio=null;if(opts.onEnd)opts.onEnd();};
     await audio.play();
+    if(opts.onStart)opts.onStart();
   }catch(e){
-    speakFallback(text,el,done); // browser voice if server TTS unavailable
+    speakFallback(text,opts);
   }
 }
-
-// Browser voice fallback (needs an Arabic voice installed on the device).
-function speakFallback(text,el,done){
-  if(!('speechSynthesis'in window)){if(done)done();return;}
+function speakFallback(text,opts){
+  if(!('speechSynthesis'in window)){if(opts.onEnd)opts.onEnd();return;}
   try{
     speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang='ar-SA';u.rate=.95;
-    const ar=speechSynthesis.getVoices().find(v=>v.lang.startsWith('ar'));
-    if(ar)u.voice=ar;
-    u.onend=()=>{if(done)done();};
+    const u=new SpeechSynthesisUtterance(text);u.lang='ar-SA';u.rate=.95;
+    const ar=speechSynthesis.getVoices().find(v=>v.lang.startsWith('ar'));if(ar)u.voice=ar;
+    speaking=true;
+    u.onstart=()=>{if(opts.onStart)opts.onStart();};
+    u.onend=()=>{speaking=false;if(opts.onEnd)opts.onEnd();};
+    u.onerror=()=>{speaking=false;if(opts.onEnd)opts.onEnd();};
     speechSynthesis.speak(u);
-  }catch(e){if(done)done();}
+  }catch(e){speaking=false;if(opts.onEnd)opts.onEnd();}
 }
+if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=()=>{};
 
-// Wrap raw 16-bit mono PCM (base64) from Gemini into a playable WAV blob.
 function pcmToWav(b64,rate){
   const bin=atob(b64),len=bin.length;
   const buf=new ArrayBuffer(44+len),view=new DataView(buf);
@@ -448,58 +455,45 @@ function pcmToWav(b64,rate){
   wr(0,'RIFF');view.setUint32(4,36+len,true);wr(8,'WAVE');wr(12,'fmt ');
   view.setUint32(16,16,true);view.setUint16(20,1,true);view.setUint16(22,1,true);
   view.setUint32(24,rate,true);view.setUint32(28,rate*2,true);
-  view.setUint16(32,2,true);view.setUint16(34,16,true);wr(36,'data');
-  view.setUint32(40,len,true);
+  view.setUint16(32,2,true);view.setUint16(34,16,true);wr(36,'data');view.setUint32(40,len,true);
   for(let i=0;i<len;i++)view.setUint8(44+i,bin.charCodeAt(i));
   return new Blob([buf],{type:'audio/wav'});
 }
-if('speechSynthesis'in window)speechSynthesis.onvoiceschanged=()=>{};
 
-/* ── Voice IN (record → Gemini transcribes the Darija) ──────────
-   The browser's own speech recognition has no real Darija support, so we
-   record the audio and let Gemini transcribe it on the server instead. */
-const micBtn=document.getElementById('mic');
+/* ── Voice IN (record → Gemini transcribes the Darija) ── */
 let media=null,chunks=[],recording=false,micStream=null,stopTimer=null;
-
-function showErr(m){document.getElementById('err').textContent=m||'';}
+let recOnResult=null,recOnProcessing=null,recOnError=null;
 
 function pickMime(){
   const opts=['audio/webm;codecs=opus','audio/ogg;codecs=opus','audio/webm','audio/mp4'];
   for(const m of opts){try{if(window.MediaRecorder&&MediaRecorder.isTypeSupported(m))return m;}catch(e){}}
   return '';
 }
-
-async function toggleMic(){
-  if(recording){stopRec();return;}
-  if(!navigator.mediaDevices||!window.MediaRecorder){showErr('المتصفح ديالك ما كيدعمش التسجيل الصوتي. جرّب Chrome.');return;}
-  showErr('');
+async function startRec(handlers){
+  if(recording)return;
+  handlers=handlers||{};
+  recOnResult=handlers.onResult;recOnProcessing=handlers.onProcessing;recOnError=handlers.onError;
+  if(!navigator.mediaDevices||!window.MediaRecorder){toast('المتصفح ديالك ما كيدعمش التسجيل. جرّب Chrome.');if(recOnError)recOnError();return;}
   try{micStream=await navigator.mediaDevices.getUserMedia({audio:true});}
-  catch(e){showErr('خاصك تسمح بالميكروفون باش نقدر نسمع ليك.');return;}
-  try{speechSynthesis.cancel();}catch(e){}
+  catch(e){toast('خاصك تسمح بالميكروفون باش نسمع ليك.');if(recOnError)recOnError();return;}
+  stopAllAudio();
   const mime=pickMime();chunks=[];
   media=new MediaRecorder(micStream,mime?{mimeType:mime}:undefined);
   media.ondataavailable=e=>{if(e.data&&e.data.size)chunks.push(e.data);};
   media.onstop=handleStop;
-  media.start();
-  recording=true;micBtn.classList.add('live');micBtn.title='سالي التسجيل';
-  stopTimer=setTimeout(()=>{if(recording)stopRec();},15000); // safety cap
+  media.start();recording=true;
+  stopTimer=setTimeout(()=>{if(recording)stopRec();},15000);
 }
-
 function stopRec(){
   recording=false;clearTimeout(stopTimer);
-  micBtn.classList.remove('live');micBtn.title='اضغط وتكلم';
   try{if(media&&media.state!=='inactive')media.stop();}catch(e){}
   if(micStream){micStream.getTracks().forEach(t=>t.stop());micStream=null;}
 }
-
 async function handleStop(){
-  if(!chunks.length){return;}
+  if(!chunks.length){if(recOnError)recOnError();return;}
   const type=(media&&media.mimeType)||'audio/webm';
-  const blob=new Blob(chunks,{type});
-  const mimeType=type.split(';')[0];
-  micBtn.classList.add('busy');micBtn.disabled=true;
-  const input=document.getElementById('in-chat');
-  const ph=input.placeholder;input.placeholder='كنحوّل الصوت لكلام…';
+  const blob=new Blob(chunks,{type});const mimeType=type.split(';')[0];
+  if(recOnProcessing)recOnProcessing();
   try{
     const b64=await blobToBase64(blob);
     const r=await fetch('/api/transcribe',{method:'POST',headers:{'Content-Type':'application/json'},
@@ -507,22 +501,21 @@ async function handleStop(){
     const data=await r.json();
     if(!r.ok||data.error)throw new Error(data.error||'fail');
     const t=(data.text||'').trim();
-    if(t){input.value=t;send();}
-    else{showErr('ما سمعتش مزيان، عاود تكلم من فضلك.');}
+    if(t&&recOnResult)recOnResult(t);
+    else if(recOnError)recOnError();
   }catch(e){
-    showErr('ما قدرناش نحوّلو الصوت. تأكد من الإنترنت ومن مفتاح Gemini.');
-  }finally{
-    micBtn.classList.remove('busy');micBtn.disabled=false;input.placeholder=ph;
+    if(recOnError)recOnError();
+    toast('ما قدرناش نحوّلو الصوت. تأكد من الإنترنت ومفتاح Gemini.');
   }
 }
-
 function blobToBase64(blob){
   return new Promise((res,rej)=>{const r=new FileReader();
     r.onloadend=()=>res(String(r.result).split(',')[1]);r.onerror=rej;r.readAsDataURL(blob);});
 }
 
-/* init */
-setStep(0);
+/* ── Init ── */
+if(profile.name){ setupHome(); go('home'); }
+else{ go('welcome'); }
 </script>
 </body>
 </html>
