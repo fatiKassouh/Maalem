@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;background:#FBF7F1;}
+::-webkit-scrollbar{width:10px;height:10px;}
+::-webkit-scrollbar-thumb{background:#E4D8C8;border-radius:10px;border:3px solid #FBF7F1;}
+::-webkit-scrollbar-track{background:transparent;}
+input,textarea,button{font-family:inherit;}
+input:focus,textarea:focus{outline:none;}
+[dir="rtl"]{font-family:'Cairo','Jost',sans-serif;}
+@keyframes mpulse{0%{box-shadow:0 0 0 0 rgba(242,102,56,.5);}70%{box-shadow:0 0 0 16px rgba(242,102,56,0);}100%{box-shadow:0 0 0 0 rgba(242,102,56,0);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.2;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+@keyframes wave{0%,100%{transform:scaleY(.35);}50%{transform:scaleY(1);}}
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes sheetUp{from{transform:translateY(100%);}to{transform:none;}}
+@media (max-width:760px){
+  .login-card{width:92vw !important; padding:32px 22px 26px !important;}
+  .topbar{padding:0 13px !important;}
+  .brand-text{display:none !important;}
+  .role-seg button{padding:6px 11px !important; font-size:12.5px !important;}
+  .lang-label{display:none !important;}
+  .pad-main{padding:20px 15px 30px !important;}
+  .pad-chat{padding:18px 14px !important;}
+  .disc-grid{grid-template-columns:1fr !important;}
+  .pf-grid{grid-template-columns:repeat(2,1fr) !important; gap:12px !important;}
+  .pf-slot{height:132px !important;}
+  .pf-body{flex-direction:column !important; align-items:stretch !important;}
+  .pf-side{width:100% !important;}
+  .prof-head{flex-wrap:wrap !important;}
+  .prof-actions{width:100% !important;}
+  .prof-actions button{flex:1 !important;}
+  .apply-modal{width:100% !important;}
+  .composer-prompts{flex-wrap:nowrap !important; overflow-x:auto !important; padding-bottom:2px !important;}
+  .h1-resp{font-size:27px !important; font-weight:700 !important; letter-spacing:-.3px !important;}
+  .chat-wrap{max-width:100% !important;}
+  .topbar{position:sticky !important; top:0 !important; z-index:20 !important; height:auto !important; min-height:54px !important; padding-top:calc(7px + env(safe-area-inset-top)) !important; padding-bottom:7px !important;}
+  .apply-overlay{align-items:flex-end !important; padding:0 !important;}
+  .apply-modal{width:100% !important; max-height:92vh !important; border-radius:24px 24px 0 0 !important; animation:sheetUp .3s cubic-bezier(.32,.72,0,1) !important;}
+  .sheet-grabber{display:block !important;}
+  .mobile-hdr{display:block !important;}
+  .tabbar{box-shadow:0 -4px 18px rgba(42,39,36,.05) !important;}
+}
+</style>
+<script src="./image-slot.js"></script>
+</helmet>
+
+<div dir="{{ dir }}" style="font-family:'Jost',sans-serif; height:100vh; width:100%; overflow:hidden; color:#2A2724;">
+
+  <!-- ===================== LOGIN ===================== -->
+  <sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+  <div style="height:100vh; width:100%; display:flex; align-items:center; justify-content:center; position:relative; background:#FBF7F1; overflow:hidden;">
+    <div style="position:absolute; top:-120px; right:-120px; width:460px; height:460px; color:#FAA864; opacity:.16; pointer-events:none;">
+      <svg viewBox="0 0 100 100" width="100%" height="100%"><g fill="currentColor"><path transform="rotate(0 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(45 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(90 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(135 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(180 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(225 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(270 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(315 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><circle cx="50" cy="50" r="7"/></g></svg>
+    </div>
+    <div style="position:absolute; bottom:-160px; left:-120px; width:420px; height:420px; color:#2EAFAA; opacity:.10; pointer-events:none;">
+      <svg viewBox="0 0 100 100" width="100%" height="100%"><g fill="currentColor"><path transform="rotate(0 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(45 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(90 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(135 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(180 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(225 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(270 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(315 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><circle cx="50" cy="50" r="7"/></g></svg>
+    </div>
+
+    <div class="login-card" style="position:relative; width:412px; background:#fff; border-radius:22px; padding:40px 38px 32px; box-shadow:0 18px 50px rgba(42,39,36,.10); border:1px solid #F0E7DA;">
+      <button onClick="{{ cycleLang }}" style="position:absolute; top:16px; inset-inline-end:16px; display:flex; align-items:center; gap:6px; background:#F6EEE4; border:1px solid #EEE3D4; color:#6c635a; padding:6px 12px; border-radius:999px; font-size:12.5px; font-weight:500; cursor:pointer;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>{{ langLabel }}
+      </button>
+      <div style="display:flex; flex-direction:column; align-items:center; margin-bottom:24px;">
+        <img src="maalem-logo.png" alt="Maalem" style="width:148px; height:auto; display:block;" />
+        <div style="font-size:14.5px; color:#8A8178; margin-top:8px;">{{ t.tagline }}</div>
+      </div>
+
+      <div style="display:flex; gap:6px; background:#F6EEE4; padding:5px; border-radius:13px; margin-bottom:22px;">
+        <button onClick="{{ chooseArtisan }}" style="{{ roleArtStyle }}">{{ t.iAmArtisan }}</button>
+        <button onClick="{{ chooseOrg }}" style="{{ roleOrgStyle }}">{{ t.iAmOrganizer }}</button>
+      </div>
+
+      <label style="display:block; font-size:13px; font-weight:500; color:#6c635a; margin-bottom:6px;">{{ t.email }}</label>
+      <input value="{{ email }}" onChange="{{ setEmail }}" placeholder="you@studio.com" style="width:100%; padding:12px 14px; border:1px solid #E6DBCC; border-radius:11px; font-size:15px; margin-bottom:16px; background:#FCFAF6; color:#2A2724;" />
+      <label style="display:block; font-size:13px; font-weight:500; color:#6c635a; margin-bottom:6px;">{{ t.password }}</label>
+      <input value="{{ password }}" onChange="{{ setPassword }}" type="password" placeholder="••••••••" style="width:100%; padding:12px 14px; border:1px solid #E6DBCC; border-radius:11px; font-size:15px; margin-bottom:8px; background:#FCFAF6; color:#2A2724;" />
+      <div style="text-align:end; margin-bottom:18px;"><span style="font-size:13px; color:#8A8178; cursor:pointer;">{{ t.forgot }}</span></div>
+
+      <button onClick="{{ doLogin }}" style="width:100%; padding:14px; background:#F26638; color:#fff; border:none; border-radius:12px; font-size:16px; font-weight:600; cursor:pointer; box-shadow:0 6px 16px rgba(242,102,56,.28); letter-spacing:.2px;">{{ loginCta }}</button>
+
+      <div style="display:flex; align-items:center; gap:12px; margin:20px 0;">
+        <div style="flex:1; height:1px; background:#EFE6D9;"></div>
+        <div style="font-size:12.5px; color:#B3A99C;">{{ t.orWord }}</div>
+        <div style="flex:1; height:1px; background:#EFE6D9;"></div>
+      </div>
+      <button onClick="{{ doLogin }}" style="width:100%; padding:12px; background:#fff; color:#3a352f; border:1px solid #E6DBCC; border-radius:12px; font-size:14.5px; font-weight:500; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:9px;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M12 11v3.5h4.9c-.2 1.3-1.6 3.7-4.9 3.7-3 0-5.4-2.5-5.4-5.5S9 6.7 12 6.7c1.7 0 2.8.7 3.5 1.3l2.4-2.3C16.3 4.2 14.4 3.3 12 3.3 6.9 3.3 2.8 7.5 2.8 12.7S6.9 22 12 22c5.1 0 8.5-3.6 8.5-8.6 0-.6-.1-1-.2-1.5H12z" fill="#F26638"/></svg>
+        {{ t.googleCont }}
+      </button>
+      <div style="text-align:center; font-size:13.5px; color:#8A8178; margin-top:20px;">{{ t.newToMaalem }} <span style="color:#F26638; font-weight:600; cursor:pointer;">{{ t.createAccount }}</span></div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ===================== APP ===================== -->
+  <sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+  <div style="height:100vh; display:flex; flex-direction:column; background:#FBF7F1;">
+
+    <!-- top bar -->
+    <div class="topbar" style="height:62px; flex:none; display:flex; align-items:center; justify-content:space-between; padding:0 22px; background:#fff; border-bottom:1px solid #EFE6D9;">
+      <div style="display:flex; align-items:center; gap:9px;">
+        <img src="maalem-mark.png" alt="" style="width:30px; height:30px; display:block;" />
+        <div class="brand-text" style="font-size:20px; font-weight:600; color:#F26638; letter-spacing:.3px;">Maalem</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <button onClick="{{ cycleLang }}" style="display:flex; align-items:center; gap:6px; background:#F6EEE4; border:1px solid #EEE3D4; color:#6c635a; padding:7px 12px; border-radius:999px; font-size:13px; font-weight:500; cursor:pointer;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span class="lang-label">{{ langLabel }}</span>
+        </button>
+        <div class="role-seg" style="display:flex; gap:4px; background:#F6EEE4; padding:4px; border-radius:10px;">
+          <button onClick="{{ switchToArtisan }}" style="{{ swArtStyle }}">{{ t.artisan }}</button>
+          <button onClick="{{ switchToOrg }}" style="{{ swOrgStyle }}">{{ t.organizer }}</button>
+        </div>
+        <div style="width:36px; height:36px; border-radius:50%; background:{{ meColor }}; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:15px;">{{ meInitial }}</div>
+        <button onClick="{{ logout }}" title="Log out" style="background:transparent; border:none; cursor:pointer; color:#B3A99C; display:flex; align-items:center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        </button>
+      </div>
+    </div>
+
+    <div style="flex:1; display:flex; min-height:0;">
+      <!-- nav rail -->
+      <sc-if value="{{ showSidebar }}" hint-placeholder-val="{{ true }}">
+      <div style="width:236px; flex:none; background:#fff; border-inline-end:1px solid #EFE6D9; padding:18px 14px; display:flex; flex-direction:column;">
+        <sc-if value="{{ isArtisan }}" hint-placeholder-val="{{ true }}">
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <button onClick="{{ setAChat }}" style="{{ nChat }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg> {{ t.assistant }}</button>
+          <button onClick="{{ setAEvents }}" style="{{ nEvents }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> {{ t.myEvents }}</button>
+          <button onClick="{{ setAProfile }}" style="{{ nProfile }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> {{ t.myPortfolio }}</button>
+        </div>
+        </sc-if>
+        <sc-if value="{{ isOrganizer }}" hint-placeholder-val="{{ false }}">
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <button onClick="{{ setODiscover }}" style="{{ nDiscover }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> {{ t.discover }}</button>
+          <button onClick="{{ setOShortlist }}" style="{{ nShortlist }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg> {{ t.shortlist }} <span style="margin-inline-start:auto; font-size:12px; background:#FDEEE6; color:#E0541F; padding:1px 8px; border-radius:999px; font-weight:600;">{{ savedCount }}</span></button>
+        </div>
+        </sc-if>
+
+        <div style="margin-top:auto; background:#F6EEE4; border-radius:14px; padding:15px;">
+          <div style="font-size:13px; font-weight:600; color:#3a352f; margin-bottom:4px;">{{ railTipTitle }}</div>
+          <div style="font-size:12.5px; color:#8A8178; line-height:1.45;">{{ railTipBody }}</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- main content -->
+      <div style="flex:1; min-width:0; display:flex; flex-direction:column;">
+
+        <!-- CHAT -->
+        <sc-if value="{{ viewChat }}" hint-placeholder-val="{{ true }}">
+        <div style="flex:1; display:flex; flex-direction:column; min-height:0;">
+          <div class="mobile-hdr" style="display:none; flex:none; padding:12px 16px 4px; background:#FBF7F1;">
+            <div style="font-size:27px; font-weight:700; letter-spacing:-.3px;">{{ t.assistant }}</div>
+          </div>
+          <div ref="{{ msgRef }}" class="pad-chat" style="flex:1; overflow-y:auto; padding:30px 24px;">
+            <div class="chat-wrap" style="max-width:760px; margin:0 auto; display:flex; flex-direction:column; gap:18px;">
+              <sc-for list="{{ chatItems }}" as="m" hint-placeholder-count="2">
+                <div style="{{ m.rowStyle }}">
+                  <div style="{{ m.bubbleStyle }}">{{ m.text }}</div>
+                  <sc-if value="{{ m.hasEvents }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex; flex-direction:column; gap:12px; width:100%; margin-top:4px;">
+                    <sc-for list="{{ m.events }}" as="e" hint-placeholder-count="3">
+                      <div style="background:#fff; border:1px solid #EFE6D9; border-radius:15px; overflow:hidden; box-shadow:0 3px 14px rgba(42,39,36,.05);">
+                        <sc-if value="{{ e.img }}" hint-placeholder-val="{{ false }}">
+                          <div style="height:150px; overflow:hidden; position:relative;">
+                            <div style="width:100%; height:100%; background:url('{{ e.img }}') center/cover no-repeat; display:block;" aria-label="{{ e.title }}"></div>
+                            <div style="position:absolute; inset:0; background:linear-gradient(to bottom, transparent 40%, rgba(0,0,0,0.38));"></div>
+                          </div>
+                        </sc-if>
+                        <div style="padding:16px 18px;">
+                          <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+                            <div style="min-width:0;">
+                              <div style="display:flex; align-items:center; gap:8px; margin-bottom:5px;">
+                                <span style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.6px; color:#fff; background:#2EAFAA; padding:2px 8px; border-radius:6px;">{{ e.type }}</span>
+                                <span style="font-size:13px; color:#A89E91;">{{ e.dateLoc }}</span>
+                              </div>
+                              <div style="font-size:17px; font-weight:600; color:#2A2724;">{{ e.title }}</div>
+                              <div style="font-size:13.5px; color:#8A8178; margin-top:4px; line-height:1.4;">{{ e.blurb }}</div>
+                            </div>
+                            <div style="flex:none; text-align:center; background:#FDEEE6; border-radius:12px; padding:8px 12px;">
+                              <div style="font-size:20px; font-weight:700; color:#E0541F; line-height:1;">{{ e.match }}%</div>
+                              <div style="font-size:10.5px; color:#E0904F; font-weight:500; letter-spacing:.4px; margin-top:2px;">{{ t.match }}</div>
+                            </div>
+                          </div>
+                          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:14px; padding-top:13px; border-top:1px solid #F3EBDF;">
+                            <div style="font-size:13px; color:#8A8178;">{{ e.feeSpots }}</div>
+                            <button onClick="{{ e.apply }}" style="{{ e.applyStyle }}">{{ e.applyLabel }}</button>
+                          </div>
+                        </div>
+                      </div>
+                    </sc-for>
+                  </div>
+                  </sc-if>
+                </div>
+              </sc-for>
+              <sc-if value="{{ typing }}" hint-placeholder-val="{{ false }}">
+                <div style="align-self:flex-start; background:#fff; border:1px solid #EFE6D9; border-radius:16px 16px 16px 4px; padding:14px 18px; display:flex; gap:5px;">
+                  <span style="width:7px; height:7px; border-radius:50%; background:#CDB89E; animation:blink 1s infinite;"></span>
+                  <span style="width:7px; height:7px; border-radius:50%; background:#CDB89E; animation:blink 1s infinite .2s;"></span>
+                  <span style="width:7px; height:7px; border-radius:50%; background:#CDB89E; animation:blink 1s infinite .4s;"></span>
+                </div>
+              </sc-if>
+            </div>
+          </div>
+
+          <!-- composer -->
+          <div style="flex:none; border-top:1px solid #EFE6D9; background:#fff; padding:14px 24px 18px;">
+            <div class="chat-wrap" style="max-width:760px; margin:0 auto;">
+              <div class="composer-prompts" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+                <sc-for list="{{ prompts }}" as="p" hint-placeholder-count="3">
+                  <button onClick="{{ p.send }}" style="background:#F8F1E7; border:1px solid #EEE3D4; color:#6c635a; padding:8px 14px; border-radius:999px; font-size:13.5px; cursor:pointer; white-space:nowrap;">{{ p.text }}</button>
+                </sc-for>
+              </div>
+              <div style="position:relative; display:flex; align-items:flex-end; gap:10px; background:#FCFAF6; border:1px solid #E6DBCC; border-radius:16px; padding:8px 8px 8px 18px;">
+                <textarea value="{{ input }}" onChange="{{ setInput }}" onKeyDown="{{ onInputKey }}" rows="1" placeholder="{{ t.composerPlaceholder }}" style="flex:1; border:none; background:transparent; resize:none; font-size:15px; line-height:1.5; padding:8px 0; color:#2A2724; max-height:120px;"></textarea>
+                <button onClick="{{ startVoice }}" title="Voice input" style="{{ micStyle }}">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+                </button>
+                <button onClick="{{ toggleVoiceMode }}" title="Toggle voice read aloud" style="{{ speakerStyle }}">
+                  <sc-if value="{{ voiceMode }}" hint-placeholder-val="{{ false }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                    </svg>
+                  </sc-if>
+                  <sc-if value="{{ voiceModeOff }}" hint-placeholder-val="{{ true }}">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    </svg>
+                  </sc-if>
+                </button>
+                <button onClick="{{ sendInput }}" style="width:42px; height:42px; flex:none; border-radius:12px; background:#F26638; color:#fff; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(242,102,56,.28);">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                </button>
+
+                <sc-if value="{{ listening }}" hint-placeholder-val="{{ false }}">
+                <div style="position:absolute; inset:0; background:rgba(255,255,255,.97); border-radius:16px; display:flex; align-items:center; justify-content:center; gap:18px;">
+                  <div style="width:46px; height:46px; border-radius:50%; background:#F26638; color:#fff; display:flex; align-items:center; justify-content:center; animation:mpulse 1.4s infinite;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/></svg>
+                  </div>
+                  <div style="display:flex; align-items:flex-end; gap:3px; height:26px;">
+                    <span style="width:3px; height:100%; background:#F26638; border-radius:3px; animation:wave .9s infinite ease-in-out;"></span>
+                    <span style="width:3px; height:100%; background:#FAA864; border-radius:3px; animation:wave .9s infinite ease-in-out .15s;"></span>
+                    <span style="width:3px; height:100%; background:#F26638; border-radius:3px; animation:wave .9s infinite ease-in-out .3s;"></span>
+                    <span style="width:3px; height:100%; background:#FAA864; border-radius:3px; animation:wave .9s infinite ease-in-out .45s;"></span>
+                    <span style="width:3px; height:100%; background:#F26638; border-radius:3px; animation:wave .9s infinite ease-in-out .6s;"></span>
+                  </div>
+                  <div style="font-size:15px; color:#6c635a; font-weight:500;">{{ t.listening }}</div>
+                  <button onClick="{{ stopVoiceAndSubmit }}" style="background:#F26638; border:none; color:#fff; padding:8px 20px; border-radius:999px; font-size:13.5px; font-weight:600; cursor:pointer; margin-inline-end:8px;">{{ t.done }}</button>
+                  <button onClick="{{ cancelVoice }}" style="background:#F6EEE4; border:none; color:#8A8178; padding:8px 16px; border-radius:999px; font-size:13.5px; cursor:pointer;">{{ t.cancel }}</button>
+                </div>
+                </sc-if>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- MY EVENTS -->
+        <sc-if value="{{ viewEvents }}" hint-placeholder-val="{{ false }}">
+        <div class="pad-main" style="flex:1; overflow-y:auto; padding:32px 28px;">
+          <div style="max-width:780px; margin:0 auto;">
+            <h1 class="h1-resp" style="font-size:27px; font-weight:600; margin:0 0 4px;">{{ t.eventsTitle }}</h1>
+            <p style="font-size:15px; color:#8A8178; margin:0 0 24px;">{{ t.eventsSubtitle }}</p>
+            <div style="display:flex; flex-direction:column; gap:14px;">
+              <sc-for list="{{ myEvents }}" as="e" hint-placeholder-count="4">
+                <div style="background:#fff; border:1px solid #EFE6D9; border-radius:16px; padding:18px 20px; display:flex; align-items:center; gap:18px; box-shadow:0 3px 14px rgba(42,39,36,.04);">
+                  <div style="width:54px; height:54px; flex:none; border-radius:13px; background:{{ e.dateBg }}; display:flex; flex-direction:column; align-items:center; justify-content:center; color:{{ e.dateColor }};">
+                    <div style="font-size:18px; font-weight:700; line-height:1;">{{ e.day }}</div>
+                    <div style="font-size:11px; font-weight:600; text-transform:uppercase; letter-spacing:.5px;">{{ e.mon }}</div>
+                  </div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-size:17px; font-weight:600;">{{ e.title }}</div>
+                    <div style="font-size:13.5px; color:#8A8178; margin-top:3px;">{{ e.dateLoc }} · {{ e.feeSpots }}</div>
+                  </div>
+                  <div style="{{ e.statusStyle }}">{{ e.status }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- PROFILE (shared) -->
+        <sc-if value="{{ viewProfile }}" hint-placeholder-val="{{ false }}">
+        <div style="flex:1; overflow-y:auto;">
+          <sc-if value="{{ profile.showBack }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:18px 28px 0; max-width:880px; margin:0 auto;">
+              <button onClick="{{ profile.back }}" style="background:transparent; border:none; color:#8A8178; cursor:pointer; font-size:14px; display:flex; align-items:center; gap:6px; padding:0;">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{ flipIcon }}"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg> {{ t.backToDiscovery }}
+              </button>
+            </div>
+          </sc-if>
+          <div class="pad-main" style="max-width:880px; margin:0 auto; padding:26px 28px 48px;">
+            <!-- header -->
+            <div style="background:#fff; border:1px solid #EFE6D9; border-radius:20px; overflow:hidden; box-shadow:0 4px 18px rgba(42,39,36,.05);">
+              <div style="height:120px; background:{{ profile.bannerBg }}; position:relative;">
+                <div style="position:absolute; inset-inline-end:-30px; top:-30px; width:200px; height:200px; color:#fff; opacity:.16;">
+                  <svg viewBox="0 0 100 100" width="100%" height="100%"><g fill="currentColor"><path transform="rotate(0 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(45 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(90 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(135 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(180 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(225 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(270 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(315 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><circle cx="50" cy="50" r="7"/></g></svg>
+                </div>
+              </div>
+              <div class="prof-head" style="padding:0 28px 22px; display:flex; align-items:flex-end; gap:20px;">
+                <div style="width:96px; height:96px; flex:none; margin-top:-46px; border-radius:50%; background:{{ profile.accent }}; border:4px solid #fff; color:#fff; display:flex; align-items:center; justify-content:center; font-size:38px; font-weight:600; box-shadow:0 6px 16px rgba(0,0,0,.12);">{{ profile.initial }}</div>
+                <div style="flex:1; padding-top:14px;">
+                  <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+                    <h1 style="font-size:25px; font-weight:600; margin:0; white-space:nowrap;">{{ profile.name }}</h1>
+                    <span style="font-size:12.5px; font-weight:600; color:{{ profile.accent }}; background:{{ profile.soft }}; padding:3px 11px; border-radius:999px;">{{ profile.craft }}</span>
+                  </div>
+                  <div style="font-size:14px; color:#8A8178; margin-top:5px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;">
+                    <span style="display:flex; align-items:center; gap:5px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ profile.location }}</span>
+                    <span style="display:flex; align-items:center; gap:5px; color:#E0904F;"><svg width="14" height="14" viewBox="0 0 24 24" fill="#FAA864" stroke="#FAA864" stroke-width="1"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#3a352f; font-weight:600;">{{ profile.rating }}</span> ({{ profile.reviews }} {{ t.reviewsWord }})</span>
+                  </div>
+                </div>
+                <div class="prof-actions" style="display:flex; gap:10px; padding-bottom:4px;">
+                  <button onClick="{{ profile.secondaryAction }}" style="padding:11px 18px; background:#fff; border:1px solid #E6DBCC; border-radius:11px; font-size:14.5px; font-weight:500; color:#3a352f; cursor:pointer;">{{ profile.secondaryLabel }}</button>
+                  <button onClick="{{ profile.primaryAction }}" style="padding:11px 20px; background:#F26638; border:none; border-radius:11px; font-size:14.5px; font-weight:600; color:#fff; cursor:pointer; box-shadow:0 5px 14px rgba(242,102,56,.26);">{{ profile.primaryLabel }}</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="pf-body" style="display:flex; gap:22px; margin-top:22px; align-items:flex-start;">
+              <div style="flex:1; min-width:0;">
+                <div style="font-size:13px; font-weight:600; text-transform:uppercase; letter-spacing:.7px; color:#B3A99C; margin-bottom:12px;">{{ t.portfolio }}</div>
+                <div class="pf-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px;">
+                  <sc-for list="{{ profile.pieces }}" as="p" hint-placeholder-count="6">
+                    <div style="display:flex; flex-direction:column; gap:7px;">
+                      <div class="pf-slot" style="height:150px;">
+                        <image-slot id="{{ p.slotId }}" shape="rounded" radius="14" placeholder="{{ t.addPhoto }}" style="width:100%; height:100%; display:block;"></image-slot>
+                      </div>
+                      <div style="font-size:13px; color:#6c635a; font-weight:500; line-height:1.3;">{{ p.caption }}</div>
+                    </div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div class="pf-side" style="width:268px; flex:none; display:flex; flex-direction:column; gap:16px;">
+                <div style="background:#fff; border:1px solid #EFE6D9; border-radius:16px; padding:18px;">
+                  <div style="display:flex; justify-content:space-around; text-align:center;">
+                    <sc-for list="{{ profile.stats }}" as="s" hint-placeholder-count="3">
+                      <div>
+                        <div style="font-size:21px; font-weight:700; color:#2A2724;">{{ s.value }}</div>
+                        <div style="font-size:11.5px; color:#A89E91; margin-top:2px;">{{ s.label }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="background:#fff; border:1px solid #EFE6D9; border-radius:16px; padding:18px;">
+                  <div style="font-size:14px; font-weight:600; margin-bottom:8px;">{{ t.about }}</div>
+                  <p style="font-size:14px; color:#6c635a; line-height:1.55; margin:0 0 14px;">{{ profile.bio }}</p>
+                  <div style="display:flex; flex-wrap:wrap; gap:7px;">
+                    <sc-for list="{{ profile.tags }}" as="tg" hint-placeholder-count="3">
+                      <span style="font-size:12.5px; color:#6c635a; background:#F6EEE4; padding:4px 11px; border-radius:999px;">{{ tg }}</span>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="background:#fff; border:1px solid #EFE6D9; border-radius:16px; padding:18px;">
+                  <div style="font-size:14px; font-weight:600; margin-bottom:12px;">{{ t.reviews }}</div>
+                  <div style="display:flex; flex-direction:column; gap:14px;">
+                    <sc-for list="{{ profile.reviewsList }}" as="r" hint-placeholder-count="2">
+                      <div>
+                        <div style="font-size:13.5px; color:#3a352f; line-height:1.5; font-style:italic;">“{{ r.text }}”</div>
+                        <div style="font-size:12px; color:#A89E91; margin-top:5px;">— {{ r.name }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- DISCOVER -->
+        <sc-if value="{{ viewDiscover }}" hint-placeholder-val="{{ false }}">
+        <div class="pad-main" style="flex:1; overflow-y:auto; padding:30px 28px 40px;">
+          <div style="max-width:1040px; margin:0 auto;">
+            <h1 class="h1-resp" style="font-size:27px; font-weight:600; margin:0 0 4px;">{{ t.discoverArtisans }}</h1>
+            <p style="font-size:15px; color:#8A8178; margin:0 0 20px;">{{ t.discoverSubtitle }}</p>
+            <div style="position:relative; margin-bottom:16px;">
+              <svg style="position:absolute; inset-inline-start:15px; top:50%; transform:translateY(-50%); color:#B3A99C;" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input value="{{ search }}" onChange="{{ setSearch }}" placeholder="{{ t.searchPlaceholder }}" style="width:100%; padding:13px 44px; border:1px solid #E6DBCC; border-radius:13px; font-size:15px; background:#fff;" />
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px;">
+              <sc-for list="{{ craftChips }}" as="c" hint-placeholder-count="7">
+                <button onClick="{{ c.set }}" style="{{ c.style }}">{{ c.label }}</button>
+              </sc-for>
+            </div>
+            <div class="disc-grid" style="display:grid; grid-template-columns:repeat(3,1fr); gap:18px;">
+              <sc-for list="{{ filteredArtisans }}" as="a" hint-placeholder-count="6">
+                <div style="background:#fff; border:1px solid #EFE6D9; border-radius:18px; overflow:hidden; box-shadow:0 3px 14px rgba(42,39,36,.05); display:flex; flex-direction:column;">
+                  <div style="height:128px; background:{{ a.thumbBg }}; position:relative; display:flex; align-items:flex-end; padding:14px;">
+                    <div style="position:absolute; inset-inline-end:-24px; top:-24px; width:120px; height:120px; color:#fff; opacity:.18;">
+                      <svg viewBox="0 0 100 100" width="100%" height="100%"><g fill="currentColor"><path transform="rotate(0 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(45 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(90 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(135 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(180 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(225 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(270 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><path transform="rotate(315 50 50)" d="M50 7 C57 27 57 36 50 50 C43 36 43 27 50 7 Z"/><circle cx="50" cy="50" r="7"/></g></svg>
+                    </div>
+                    <span style="position:relative; font-size:12px; font-weight:600; color:#fff; background:rgba(0,0,0,.18); padding:3px 11px; border-radius:999px; backdrop-filter:blur(2px);">{{ a.craft }}</span>
+                    <button onClick="{{ a.toggleSave }}" style="{{ a.saveStyle }}">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="{{ a.saveFill }}" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+                    </button>
+                  </div>
+                  <div style="padding:16px; display:flex; flex-direction:column; flex:1;">
+                    <div style="font-size:17px; font-weight:600;">{{ a.name }}</div>
+                    <div style="font-size:13.5px; color:#8A8178; margin-top:3px; display:flex; align-items:center; gap:5px;">
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>{{ a.location }}
+                      <span style="margin-inline-start:auto; color:#E0904F; display:flex; align-items:center; gap:4px;"><svg width="13" height="13" viewBox="0 0 24 24" fill="#FAA864" stroke="#FAA864"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span style="color:#3a352f; font-weight:600;">{{ a.rating }}</span></span>
+                    </div>
+                    <div style="font-size:13.5px; color:#6c635a; line-height:1.45; margin:11px 0 14px; flex:1;">{{ a.tagline }}</div>
+                    <button onClick="{{ a.view }}" style="width:100%; padding:10px; background:#FDEEE6; color:#E0541F; border:none; border-radius:10px; font-size:14px; font-weight:600; cursor:pointer;">{{ t.viewPortfolio }}</button>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+        </sc-if>
+
+        <!-- SHORTLIST -->
+        <sc-if value="{{ viewShortlist }}" hint-placeholder-val="{{ false }}">
+        <div class="pad-main" style="flex:1; overflow-y:auto; padding:32px 28px;">
+          <div style="max-width:780px; margin:0 auto;">
+            <h1 class="h1-resp" style="font-size:27px; font-weight:600; margin:0 0 4px;">{{ t.shortlistTitle }}</h1>
+            <p style="font-size:15px; color:#8A8178; margin:0 0 24px;">{{ t.shortlistSubtitle }}</p>
+            <sc-if value="{{ hasShortlist }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex; flex-direction:column; gap:13px;">
+              <sc-for list="{{ shortlistArtisans }}" as="a" hint-placeholder-count="2">
+                <div style="background:#fff; border:1px solid #EFE6D9; border-radius:16px; padding:16px 18px; display:flex; align-items:center; gap:16px; box-shadow:0 3px 14px rgba(42,39,36,.04);">
+                  <div style="width:50px; height:50px; flex:none; border-radius:50%; background:{{ a.accent }}; color:#fff; display:flex; align-items:center; justify-content:center; font-weight:600; font-size:19px;">{{ a.initial }}</div>
+                  <div style="flex:1; min-width:0;">
+                    <div style="font-size:16.5px; font-weight:600;">{{ a.name }}</div>
+                    <div style="font-size:13.5px; color:#8A8178; margin-top:2px;">{{ a.craft }} · {{ a.location }}</div>
+                  </div>
+                  <button onClick="{{ a.view }}" style="padding:9px 16px; background:#fff; border:1px solid #E6DBCC; border-radius:10px; font-size:14px; color:#3a352f; cursor:pointer;">{{ t.view }}</button>
+                  <button onClick="{{ a.invite }}" style="padding:9px 16px; background:#F26638; border:none; border-radius:10px; font-size:14px; font-weight:600; color:#fff; cursor:pointer;">{{ t.invite }}</button>
+                </div>
+              </sc-for>
+            </div>
+            </sc-if>
+            <sc-if value="{{ noShortlist }}" hint-placeholder-val="{{ false }}">
+              <div style="text-align:center; padding:60px 20px; color:#A89E91;">
+                <div style="width:54px; height:54px; margin:0 auto 14px; color:#E4D8C8;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+                <div style="font-size:16px; color:#8A8178;">{{ t.noSaved }}</div>
+                <div style="font-size:14px; margin-top:5px;">{{ t.noSavedSub }}</div>
+              </div>
+            </sc-if>
+          </div>
+        </div>
+        </sc-if>
+
+      </div>
+    </div>
+
+    <!-- mobile bottom nav -->
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <div class="tabbar" style="flex:none; display:flex; background:#fff; border-top:1px solid #EFE6D9; padding-bottom:env(safe-area-inset-bottom);">
+      <sc-if value="{{ isArtisan }}" hint-placeholder-val="{{ true }}">
+        <button onClick="{{ setAChat }}" style="{{ mChat }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>{{ t.assistant }}</button>
+        <button onClick="{{ setAEvents }}" style="{{ mEvents }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>{{ t.myEvents }}</button>
+        <button onClick="{{ setAProfile }}" style="{{ mProfile }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>{{ t.myPortfolio }}</button>
+      </sc-if>
+      <sc-if value="{{ isOrganizer }}" hint-placeholder-val="{{ false }}">
+        <button onClick="{{ setODiscover }}" style="{{ mDiscover }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>{{ t.discover }}</button>
+        <button onClick="{{ setOShortlist }}" style="{{ mShortlist }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>{{ t.shortlist }}</button>
+      </sc-if>
+    </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ===================== APPLY MODAL ===================== -->
+  <sc-if value="{{ applyOpen }}" hint-placeholder-val="{{ false }}">
+  <div class="apply-overlay" style="position:fixed; inset:0; background:rgba(42,39,36,.42); display:flex; align-items:center; justify-content:center; z-index:50; padding:24px;">
+    <div class="apply-modal" dir="{{ dir }}" style="width:560px; max-width:100%; max-height:90vh; overflow-y:auto; background:#fff; border-radius:20px; box-shadow:0 24px 60px rgba(0,0,0,.25);">
+      <div class="sheet-grabber" style="display:none; width:38px; height:5px; border-radius:3px; background:#E0D6C8; margin:10px auto 0;"></div>
+      <div style="padding:22px 26px; border-bottom:1px solid #EFE6D9; display:flex; justify-content:space-between; align-items:flex-start;">
+        <div>
+          <div style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:.6px; color:#E0904F;">{{ t.applyToEvent }}</div>
+          <div style="font-size:21px; font-weight:600; margin-top:4px;">{{ applyTitle }}</div>
+          <div style="font-size:13.5px; color:#8A8178; margin-top:3px;">{{ applyMeta }}</div>
+        </div>
+        <button onClick="{{ closeApply }}" style="background:#F6EEE4; border:none; width:34px; height:34px; border-radius:10px; cursor:pointer; color:#8A8178; font-size:18px; display:flex; align-items:center; justify-content:center;">×</button>
+      </div>
+      <div style="padding:22px 26px;">
+        <div style="font-size:13.5px; font-weight:600; color:#6c635a; margin-bottom:8px;">{{ t.yourPitch }} <span style="font-weight:400; color:#B3A99C;">{{ t.draftedBy }}</span></div>
+        <textarea value="{{ pitch }}" onChange="{{ setPitch }}" rows="5" style="width:100%; padding:13px 15px; border:1px solid #E6DBCC; border-radius:12px; font-size:14.5px; line-height:1.55; color:#2A2724; background:#FCFAF6; resize:vertical;"></textarea>
+
+        <div style="font-size:13.5px; font-weight:600; color:#6c635a; margin:20px 0 10px;">{{ t.piecesToAttach }}</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+          <sc-for list="{{ pieceOptions }}" as="p" hint-placeholder-count="6">
+            <button onClick="{{ p.toggle }}" style="{{ p.style }}">
+              <span style="{{ p.boxStyle }}">{{ p.check }}</span>
+              <span style="font-size:13.5px; text-align:start;">{{ p.caption }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding:18px 26px; border-top:1px solid #EFE6D9; display:flex; align-items:center; justify-content:space-between;">
+        <div style="font-size:13.5px; color:#8A8178;">{{ attachSummary }}</div>
+        <div style="display:flex; gap:10px;">
+          <button onClick="{{ closeApply }}" style="padding:12px 18px; background:#fff; border:1px solid #E6DBCC; border-radius:11px; font-size:14.5px; color:#3a352f; cursor:pointer;">{{ t.cancel }}</button>
+          <button onClick="{{ submitApply }}" style="padding:12px 22px; background:#F26638; border:none; border-radius:11px; font-size:14.5px; font-weight:600; color:#fff; cursor:pointer; box-shadow:0 5px 14px rgba(242,102,56,.26);">{{ t.submitApplication }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ===================== TOAST ===================== -->
+  <sc-if value="{{ toastVisible }}" hint-placeholder-val="{{ false }}">
+  <div dir="{{ dir }}" style="position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:#1A6261; color:#fff; padding:13px 22px; border-radius:13px; font-size:14.5px; font-weight:500; box-shadow:0 10px 30px rgba(0,0,0,.22); z-index:60; display:flex; align-items:center; gap:10px; animation:fadeUp .25s;">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7FE0D0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    {{ toast }}
+  </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:820},&quot;assistantName&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Maalem&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;startInApp&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;},&quot;defaultRole&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;artisan&quot;,&quot;organizer&quot;],&quot;default&quot;:&quot;artisan&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.CRAFTS = {
+      ceramics:{label:'Ceramics', accent:'#F26638', soft:'#FDEEE6', bg:'linear-gradient(135deg,#F26638,#E0541F)'},
+      wood:{label:'Woodworking', accent:'#8A5A3B', soft:'#F3EBE3', bg:'linear-gradient(135deg,#A06A42,#6E4427)'},
+      baking:{label:'Baking', accent:'#E08A3C', soft:'#FBEFE0', bg:'linear-gradient(135deg,#F0A24E,#D9772A)'},
+      painting:{label:'Painting', accent:'#2EAFAA', soft:'#E3F4F2', bg:'linear-gradient(135deg,#34BDB6,#1F8E89)'},
+      jewelry:{label:'Jewelry', accent:'#1A6261', soft:'#E1EEED', bg:'linear-gradient(135deg,#2A8079,#13524F)'},
+      textiles:{label:'Textiles', accent:'#C24E2A', soft:'#FAE9E2', bg:'linear-gradient(135deg,#D85F38,#A53E1F)'}
+    };
+    this.CRAFT_L = {
+      ceramics:{en:'Ceramics', da:'Khzaf', ar:'\u062e\u0632\u0641'},
+      wood:{en:'Woodworking', da:"Khdma f l'3oud", ar:'\u0646\u062c\u0627\u0631\u0629'},
+      baking:{en:'Baking', da:'Khobz w 7alawiyat', ar:'\u062e\u0628\u0632 \u0648\u062d\u0644\u0648\u064a\u0627\u062a'},
+      painting:{en:'Painting', da:'Taswir', ar:'\u062a\u0635\u0648\u064a\u0631'},
+      jewelry:{en:'Jewelry', da:'Bijouterie', ar:'\u0645\u062c\u0648\u0647\u0631\u0627\u062a'},
+      textiles:{en:'Textiles', da:'Nsij', ar:'\u0646\u0633\u064a\u062c'}
+    };
+    this.EVTYPE = {
+      Festival:{en:'Festival', da:'Festival', ar:'\u0645\u0647\u0631\u062c\u0627\u0646'},
+      Market:{en:'Market', da:'Souk', ar:'\u0633\u0648\u0642'},
+      Fair:{en:'Fair', da:'Foire', ar:'\u0645\u0639\u0631\u0636'},
+      Expo:{en:'Expo', da:'Expo', ar:'\u0625\u0643\u0633\u0628\u0648'}
+    };
+    this.T = {
+      en:{
+        tagline:'Where craft meets occasion', iAmArtisan:"I'm an Artisan", iAmOrganizer:"I'm an Organizer",
+        email:'Email', password:'Password', forgot:'Forgot password?', orWord:'or', googleCont:'Continue with Google',
+        newToMaalem:'New to Maalem?', createAccount:'Create an account', artisan:'Artisan', organizer:'Organizer',
+        signInArtisan:'Sign in as Artisan', signInOrganizer:'Sign in as Organizer',
+        assistant:'Assistant', myEvents:'My Events', myPortfolio:'My Portfolio', discover:'Discover', shortlist:'Shortlist',
+        composerPlaceholder:'Ask Maalem to find events, draft an application\u2026', listening:'Listening\u2026', cancel:'Cancel', done:'Done',
+        match:'MATCH', eventsTitle:'My Events', eventsSubtitle:'Applications and invitations across your craft.',
+        discoverArtisans:'Discover artisans', discoverSubtitle:'Find the perfect makers for your next event.',
+        searchPlaceholder:'Search by name, craft, or technique\u2026', viewPortfolio:'View portfolio', invite:'Invite', view:'View',
+        backToDiscovery:'Back to discovery', portfolio:'Portfolio', about:'About', reviews:'Reviews', reviewsWord:'reviews',
+        applyToEvent:'Apply to event', yourPitch:'Your pitch', draftedBy:'\u00b7 drafted by Maalem', piecesToAttach:'Portfolio pieces to attach',
+        submitApplication:'Submit application', noSaved:'No saved artisans yet', noSavedSub:'Tap the bookmark on any artisan in Discover.',
+        addPhoto:'Add photo', all:'All', shortlistTitle:'Shortlist', shortlistSubtitle:"Artisans you're considering inviting.",
+        proTipTitle:'Pro tip', proTipBody:'Ask the assistant to draft your pitch \u2014 it pulls from your portfolio automatically.',
+        curatingTitle:'Curating tip', curatingBody:'Shortlist makers as you browse, then invite them to an event in one tap.',
+        statCrafting:'Crafting', statEventsDone:'Events done', statRating:'Avg rating',
+        statusApplied:'Applied', statusInvited:'Invited', statusOpen:'Open match',
+        shareProfile:'Share profile', inviteToEvent:'Invite to event', editProfile:'Edit profile', messageLabel:'Message',
+        applyNow:'Apply now', appliedTag:'Applied \u2713',
+        prompts:['Find craft fairs near me','Which events fit my craft?','Help me apply to a holiday market','How can I improve my portfolio?']
+      },
+      da:{
+        tagline:"Fin l'artisanat kayltqa m3a l'occasion", iAmArtisan:'Ana artisan', iAmOrganizer:'Ana organisateur',
+        email:'Email', password:'Mot de passe', forgot:'Nsiti le mot de passe?', orWord:'wla', googleCont:'Kammel m3a Google',
+        newToMaalem:'Jdid f Maalem?', createAccount:'Sawb un compte', artisan:'Artisan', organizer:'Organisateur',
+        signInArtisan:'Dkhol b7al artisan', signInOrganizer:'Dkhol b7al organisateur',
+        assistant:"L'assistant", myEvents:'Ev\u00e9nements dyali', myPortfolio:'Portfolio dyali', discover:'D\u00e9couvrir', shortlist:'La liste',
+        composerPlaceholder:'Gol l Maalem yl9a \u00e9v\u00e9nements, ysawb demande\u2026', listening:'Kanstma3\u2026', cancel:'Annuler', done:'Safi',
+        match:'MATCH', eventsTitle:'Ev\u00e9nements dyali', eventsSubtitle:'Les demandes o les invitations f khedmtek.',
+        discoverArtisans:'D\u00e9couvri les artisans', discoverSubtitle:"L9a a7sen les artisans l \u00e9v\u00e9nement jay dyalek.",
+        searchPlaceholder:'9aleb b smiya, khedma, wla technique\u2026', viewPortfolio:'Chouf le portfolio', invite:'3ayet', view:'Chouf',
+        backToDiscovery:'Rja3 l d\u00e9couverte', portfolio:'Portfolio', about:'3la', reviews:'Les avis', reviewsWord:'avis',
+        applyToEvent:'Applyi l \u00e9v\u00e9nement', yourPitch:'Le pitch dyalek', draftedBy:'\u00b7 msaweb mn Maalem', piecesToAttach:'Les pieces li bghiti tzid',
+        submitApplication:'Sift la demande', noSaved:'Mazal ma 3endek 7tta sane3 ma7foud', noSavedSub:"9lik 3la l'signet f chi artisan f D\u00e9couvrir.",
+        addPhoto:'Zid photo', all:'Ga3', shortlistTitle:'La liste', shortlistSubtitle:'Les artisans li bghiti t3aytelhom.',
+        proTipTitle:'Conseil', proTipBody:"Gol l'assistant ysawb lik la demande \u2014 kayjib l'info mn portfolio dyalek otomatik.",
+        curatingTitle:'Conseil', curatingBody:'Zid les artisans l la liste mli katchouf, mn b3d 3ayetelhom l \u00e9v\u00e9nement b clic wa7ed.',
+        statCrafting:"d'exp\u00e9rience", statEventsDone:'Ev\u00e9nements', statRating:'Note',
+        statusApplied:'T-applya', statusInvited:'M3rod', statusOpen:'Match jdid',
+        shareProfile:'Partagi le profil', inviteToEvent:'3ayto l \u00e9v\u00e9nement', editProfile:'Bdel le profil', messageLabel:'Message',
+        applyNow:'Applyi daba', appliedTag:'T-applya \u2713',
+        prompts:['L9a lia des foires 9rib mni','Ina \u00e9v\u00e9nements li y9adou l khedmti?','3awni n-applyi l holiday market','Kifash nzayen le portfolio dyali?']
+      },
+      ar:{
+        tagline:'\u0641\u064a\u0646 \u0627\u0644\u0635\u0646\u0639\u0629 \u0643\u062a\u0644\u0627\u0642\u0627 \u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0629', iAmArtisan:'\u0623\u0646\u0627 \u0635\u0627\u0646\u0639', iAmOrganizer:'\u0623\u0646\u0627 \u0645\u0646\u0638\u0651\u0645',
+        email:'\u0627\u0644\u0625\u064a\u0645\u064a\u0644', password:'\u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631', forgot:'\u0646\u0633\u064a\u062a\u064a \u0643\u0644\u0645\u0629 \u0627\u0644\u0633\u0631\u061f', orWord:'\u0648\u0644\u0627', googleCont:'\u0643\u0645\u0644 \u0645\u0639 Google',
+        newToMaalem:'\u062c\u062f\u064a\u062f \u0641\u0645\u0639\u0644\u0645\u061f', createAccount:'\u0635\u0627\u0648\u0628 \u062d\u0633\u0627\u0628', artisan:'\u0635\u0627\u0646\u0639', organizer:'\u0645\u0646\u0638\u0651\u0645',
+        signInArtisan:'\u062f\u062e\u0644 \u0628\u062d\u0627\u0644 \u0635\u0627\u0646\u0639', signInOrganizer:'\u062f\u062e\u0644 \u0628\u062d\u0627\u0644 \u0645\u0646\u0638\u0651\u0645',
+        assistant:'\u0627\u0644\u0645\u0633\u0627\u0639\u062f', myEvents:'\u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0627\u062a \u062f\u064a\u0627\u0644\u064a', myPortfolio:'\u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648 \u062f\u064a\u0627\u0644\u064a', discover:'\u0627\u0643\u062a\u0634\u0641', shortlist:'\u0627\u0644\u0644\u0627\u0626\u062d\u0629',
+        composerPlaceholder:'\u0642\u0648\u0644 \u0644\u0645\u0639\u0644\u0645 \u064a\u0644\u0642\u0627 \u0645\u0646\u0627\u0633\u0628\u0627\u062a\u060c \u064a\u0635\u0627\u0648\u0628 \u0637\u0644\u0628\u2026', listening:'\u0643\u0646\u0633\u0645\u0639\u2026', cancel:'\u0623\u0644\u063a\u064a', done:'\u0635\u0627\u0641\u064a',
+        match:'\u062a\u0637\u0627\u0628\u0642', eventsTitle:'\u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0627\u062a \u062f\u064a\u0627\u0644\u064a', eventsSubtitle:'\u0627\u0644\u0637\u0644\u0628\u0627\u062a \u0648\u0627\u0644\u062f\u0639\u0648\u0627\u062a \u0641\u0627\u0644\u0635\u0646\u0639\u0629 \u062f\u064a\u0627\u0644\u0643.',
+        discoverArtisans:'\u0627\u0643\u062a\u0634\u0641 \u0627\u0644\u0635\u0646\u0627\u0639', discoverSubtitle:'\u0644\u0642\u0627 \u0623\u062d\u0633\u0646 \u0627\u0644\u0635\u0646\u0627\u0639 \u0644\u0644\u0645\u0646\u0627\u0633\u0628\u0629 \u0627\u0644\u062c\u0627\u064a\u0629 \u062f\u064a\u0627\u0644\u0643.',
+        searchPlaceholder:'\u0642\u0644\u0628 \u0628\u0627\u0644\u0627\u0633\u0645\u060c \u0627\u0644\u0635\u0646\u0639\u0629\u060c \u0648\u0644\u0627 \u0627\u0644\u062a\u0642\u0646\u064a\u0629\u2026', viewPortfolio:'\u0634\u0648\u0641 \u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648', invite:'\u0639\u064a\u0637', view:'\u0634\u0648\u0641',
+        backToDiscovery:'\u0631\u062c\u0639 \u0644\u0644\u0627\u0643\u062a\u0634\u0627\u0641', portfolio:'\u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648', about:'\u0639\u0644\u0649', reviews:'\u0627\u0644\u0622\u0631\u0627\u0621', reviewsWord:'\u0631\u0623\u064a',
+        applyToEvent:'\u0642\u062f\u0651\u0645 \u0644\u0644\u0645\u0646\u0627\u0633\u0628\u0629', yourPitch:'\u0627\u0644\u0639\u0631\u0636 \u062f\u064a\u0627\u0644\u0643', draftedBy:'\u00b7 \u0645\u0635\u0627\u0648\u0628 \u0645\u0646 \u0645\u0639\u0644\u0645', piecesToAttach:'\u0627\u0644\u0642\u0637\u0639 \u0644\u064a \u0628\u063a\u064a\u062a\u064a \u062a\u0632\u064a\u062f',
+        submitApplication:'\u0635\u064a\u0641\u0637 \u0627\u0644\u0637\u0644\u0628', noSaved:'\u0645\u0627\u0632\u0627\u0644 \u0645\u0627 \u0639\u0646\u062f\u0643 \u062d\u062a\u0649 \u0635\u0627\u0646\u0639 \u0645\u062d\u0641\u0648\u0638', noSavedSub:'\u0642\u0644\u0650\u0643 \u0639\u0644\u0649 \u0627\u0644\u0625\u0634\u0627\u0631\u0629 \u0641\u0623\u064a \u0635\u0627\u0646\u0639 \u0641\u0627\u0644\u0627\u0643\u062a\u0634\u0627\u0641.',
+        addPhoto:'\u0632\u064a\u062f \u0635\u0648\u0631\u0629', all:'\u0627\u0644\u0643\u0644', shortlistTitle:'\u0627\u0644\u0644\u0627\u0626\u062d\u0629', shortlistSubtitle:'\u0627\u0644\u0635\u0646\u0627\u0639 \u0644\u064a \u0628\u063a\u064a\u062a\u064a \u062a\u0639\u064a\u0637 \u0644\u064a\u0647\u0645.',
+        proTipTitle:'\u0646\u0635\u064a\u062d\u0629', proTipBody:'\u0642\u0648\u0644 \u0644\u0644\u0645\u0633\u0627\u0639\u062f \u064a\u0635\u0627\u0648\u0628 \u0644\u064a\u0643 \u0627\u0644\u0637\u0644\u0628 \u2014 \u0643\u064a\u062c\u064a\u0628 \u0627\u0644\u0645\u0639\u0644\u0648\u0645\u0627\u062a \u0645\u0646 \u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648 \u062f\u064a\u0627\u0644\u0643 \u0623\u0648\u062a\u0648\u0645\u0627\u062a\u064a\u0643.',
+        curatingTitle:'\u0646\u0635\u064a\u062d\u0629', curatingBody:'\u0632\u064a\u062f \u0627\u0644\u0635\u0646\u0627\u0639 \u0644\u0644\u0627\u0626\u062d\u0629 \u0641\u0627\u0634 \u0643\u062a\u0634\u0648\u0641\u060c \u0645\u0646 \u0628\u0639\u062f \u0639\u064a\u0637 \u0644\u064a\u0647\u0645 \u0644\u0644\u0645\u0646\u0627\u0633\u0628\u0629 \u0628\u0646\u0642\u0631\u0629 \u0648\u062d\u062f\u0629.',
+        statCrafting:'\u062e\u0628\u0631\u0629', statEventsDone:'\u0645\u0646\u0627\u0633\u0628\u0627\u062a', statRating:'\u062a\u0646\u0642\u064a\u0637',
+        statusApplied:'\u062a\u0642\u062f\u0651\u0645', statusInvited:'\u0645\u062f\u0639\u0648', statusOpen:'\u062a\u0637\u0627\u0628\u0642 \u062c\u062f\u064a\u062f',
+        shareProfile:'\u0634\u0627\u0631\u0643 \u0627\u0644\u0628\u0631\u0648\u0641\u0627\u064a\u0644', inviteToEvent:'\u0639\u064a\u0637\u0648 \u0644\u0644\u0645\u0646\u0627\u0633\u0628\u0629', editProfile:'\u0628\u062f\u0644 \u0627\u0644\u0628\u0631\u0648\u0641\u0627\u064a\u0644', messageLabel:'\u0631\u0627\u0633\u0644',
+        applyNow:'\u0642\u062f\u0651\u0645 \u062f\u0627\u0628\u0627', appliedTag:'\u062a\u0642\u062f\u0651\u0645 \u2713',
+        prompts:['\u0644\u0642\u0627 \u0644\u064a\u0627 \u0645\u0639\u0627\u0631\u0636 \u0642\u0631\u064a\u0628 \u0645\u0646\u064a','\u0627\u0634\u0645\u0646 \u0645\u0646\u0627\u0633\u0628\u0627\u062a \u0645\u0646\u0627\u0633\u0628\u064a\u0646 \u0644\u062e\u062f\u0645\u062a\u064a\u061f','\u0639\u0627\u0648\u0646\u064a \u0646\u0642\u062f\u0651\u0645 \u0644\u0633\u0648\u0642 \u0627\u0644\u0639\u0637\u0644\u0629','\u0643\u064a\u0641\u0627\u0634 \u0646\u0632\u064a\u0646 \u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648 \u062f\u064a\u0627\u0644\u064a\u061f']
+      }
+    };
+    this.PIECES = {
+      ceramics:['Glaze study series','Stoneware dinner set','Raku-fired vases','Desert-tone bowls','Wedding commission','In the studio'],
+      wood:['Olive-wood boards','Inlaid mosaic box','Turned vessel set','Live-edge bench','Custom shelving','Workshop process'],
+      baking:['Celebration cake','Levantine pastry box','Dessert table','Seasonal tarts','Catering spread','Behind the counter'],
+      painting:['Cityscape series','Commissioned mural','Miniature revival','Acrylic on canvas','Gallery wall','Sketch process'],
+      jewelry:['Filigree silver cuff','Stone-set rings','Bridal collection','Custom pendants','Earring series','At the bench'],
+      textiles:['Handwoven rug','Naturally dyed throw','Loom in progress','Cushion collection','Wall hanging','Dye garden']
+    };
+    this.PORTFOLIO_IMGS = {
+      ceramics:[
+        'https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1541123437800-1bb1317badc2?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1618220179428-22790b461013?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1565192647048-f997ded87958?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1525974160448-0370b33534df?w=500&h=400&fit=crop'
+      ],
+      wood:[
+        'https://images.unsplash.com/photo-1538688525198-9b88f6f53126?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1601049676099-e7ed07d825b0?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1606744824163-985d376605aa?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1546482502-04b3417ed3be?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1588854337236-6889d631faa8?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=500&h=400&fit=crop'
+      ],
+      baking:[
+        'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1547268647-7957945cb3f6?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1519869325930-281384150729?w=500&h=400&fit=crop'
+      ],
+      painting:[
+        'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1579783900882-c0d3dad7b119?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1580136579312-94651dfd596d?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1549887534-1541e9326642?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1579783928621-7a13d66a6211?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1561214115-f2f134cc4912?w=500&h=400&fit=crop'
+      ],
+      jewelry:[
+        'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1573408301185-9146fe634ad0?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1598560917505-59a3ad559071?w=500&h=400&fit=crop'
+      ],
+      textiles:[
+        'https://images.unsplash.com/photo-1500336624444-0370b33534d7?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1545048702-79362596cdc9?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1600121848594-d8644e57abab?w=500&h=400&fit=crop',
+        'https://images.unsplash.com/photo-1590244921951-24813f380182?w=500&h=400&fit=crop'
+      ]
+    };
+    this.ARTISANS = [
+      {id:'a1', name:'Layla Haddad', craft:'ceramics', location:'Merzouga, Morocco', rating:4.9, reviews:127, years:9, events:24,
+        tagline:'Hand-thrown stoneware glazed in desert tones.', bio:'Layla runs a small studio in Merzouga, throwing functional stoneware finished in earthy, sand-and-clay glazes inspired by the Sahara dunes. Her tableware sets are a staple at Moroccan design markets.', tags:['Stoneware','Glazing','Tableware'],
+        reviewsList:[{name:'Souk Al-Artisanat Marrakech',text:'Layla\u2019s booth was a highlight \u2014 her glazes pulled constant crowds.'},{name:'Private client',text:'Exquisite dinner set, beautifully packed and delivered on time.'}]},
+      {id:'a2', name:'Omar Khalil', craft:'wood', location:'Beirut, Lebanon', rating:4.8, reviews:89, years:14, events:31,
+        tagline:'Heirloom furniture and inlaid mosaic boxes.', bio:'A third-generation woodworker, Omar blends traditional marquetry with clean modern lines. His olive-wood pieces are commissioned across the Gulf.', tags:['Inlay','Furniture','Olive wood'],
+        reviewsList:[{name:'Beirut Makers Fair',text:'Craftsmanship that stops people mid-step. A true master.'},{name:'Boutique hotel buyer',text:'Our lobby tables draw compliments daily.'}]},
+      {id:'a3', name:'Salma Nasr', craft:'baking', location:'Cairo, Egypt', rating:5.0, reviews:64, years:6, events:18,
+        tagline:'Modern Levantine pastries and celebration cakes.', bio:'Salma reinvents heritage sweets for modern celebrations, known for sculptural cakes and grazing tables that taste as good as they look.', tags:['Pastry','Cakes','Catering'],
+        reviewsList:[{name:'Wedding planner',text:'The dessert table was the talk of the night.'},{name:'Corporate event',text:'Reliable, gorgeous, and genuinely delicious.'}]},
+      {id:'a4', name:'Yusuf Karim', craft:'painting', location:'Marrakech, Morocco', rating:4.7, reviews:52, years:11, events:20,
+        tagline:'Bold acrylic cityscapes and miniature revival.', bio:'Yusuf paints the medinas of North Africa in saturated color, and revives classical miniature techniques in contemporary commissions.', tags:['Acrylic','Murals','Commissions'],
+        reviewsList:[{name:'Gallery curator',text:'His use of color is fearless and instantly recognisable.'},{name:'Festival organiser',text:'Live-painted our stage \u2014 visitors couldn\u2019t look away.'}]},
+      {id:'a5', name:'Maryam Aziz', craft:'jewelry', location:'Istanbul, Turkey', rating:4.9, reviews:143, years:16, events:40,
+        tagline:'Filigree silver set with semi-precious stones.', bio:'Maryam hand-works fine silver filigree, a centuries-old technique, into wearable modern collections and bespoke bridal commissions.', tags:['Silver','Filigree','Custom'],
+        reviewsList:[{name:'Bridal boutique',text:'Heirloom-quality. Our brides treasure every piece.'},{name:'Craft expo jury',text:'Technical mastery, beautifully presented.'}]},
+      {id:'a6', name:'Dina Mansour', craft:'textiles', location:'Tunis, Tunisia', rating:4.8, reviews:71, years:8, events:15,
+        tagline:'Handwoven rugs and naturally dyed throws.', bio:'Dina works on a traditional loom with plant-dyed wool, producing rugs and textiles that bridge folk pattern and minimalist palettes.', tags:['Weaving','Natural dye','Rugs'],
+        reviewsList:[{name:'Interior stylist',text:'The texture and color depth are unmatched.'},{name:'Market shopper',text:'Bought a throw, came back for three more.'}]},
+      {id:'a7', name:'Tariq Saleh', craft:'wood', location:'Amman, Jordan', rating:4.6, reviews:38, years:5, events:9,
+        tagline:'Turned bowls and minimalist serveware.', bio:'Tariq specialises in lathe-turned bowls and clean serveware in local hardwoods, finished food-safe by hand.', tags:['Turning','Serveware'],
+        reviewsList:[{name:'Concept store',text:'Sells out every restock. Lovely to work with.'},{name:'Home cook',text:'The salad bowl is a daily joy.'}]},
+      {id:'a8', name:'Hana Fares', craft:'ceramics', location:'Beirut, Lebanon', rating:4.9, reviews:95, years:10, events:22,
+        tagline:'Sculptural vessels in matte earth glazes.', bio:'Hana makes one-of-a-kind sculptural vessels, exploring form and shadow in muted, matte finishes.', tags:['Sculpture','Vessels'],
+        reviewsList:[{name:'Design fair',text:'Her vessels anchored our whole curation.'},{name:'Collector',text:'Each piece feels like quiet art.'}]}
+    ];
+    this.EVENTS = [
+      {id:'e1', title:'Programme TAHFIZ-NISWA', type:'Festival', location:'Tanger \u00b7 Oriental \u00b7 Souss-Massa, Maroc', date:'Prolong\u00e9 - Jun 2026', day:'08', mon:'Jun', fee:'Gratuit', spots:'Candidatures ouvertes', match:95, crafts:['all'], blurb:"Autonomisation des femmes via l'entrepreneuriat ESS. Port\u00e9 par le Secr\u00e9tariat d'Artisanat & AECID Espagne.", img:'https://images.unsplash.com/photo-1553361371-9b22f78e8b1d?w=500&h=200&fit=crop'},
+      {id:'e2', title:'Programme National MOAZARA', type:'Fair', location:'Maroc - National', date:'En cours 2026', day:'01', mon:'Jul', fee:'Co-financement', spots:'Dossiers ouverts', match:91, crafts:['ceramics','textiles','jewelry','painting','baking'], blurb:"7\u00e8me \u00e9dition. Co-financement projets pour coop\u00e9ratives & associations ESS. Prolong\u00e9 suite aux inondations.", img:'https://images.unsplash.com/photo-1524813686514-a57563d77965?w=500&h=200&fit=crop'},
+      {id:'e3', title:'Projet RAIDATES', type:'Fair', location:'R\u00e9gions cibl\u00e9es, Maroc', date:'Prolong\u00e9 2026', day:'28', mon:'Apr', fee:'S\u00e9lection partenaires', spots:'AMI en cours', match:87, crafts:['all'], blurb:"Autonomisation \u00e9conomique des coop\u00e9ratives. AMI pour s\u00e9lection de coop\u00e9ratives partenaires dans les r\u00e9gions cibl\u00e9es.", img:'https://images.unsplash.com/photo-1582192730841-2a682d7375f9?w=500&h=200&fit=crop'},
+      {id:'e4', title:'Souk Al-Artisanat Marrakech', type:'Market', location:'Marrakech, Maroc', date:'Jul 15-20', day:'15', mon:'Jul', fee:'$50 / stand', spots:'12 stands disponibles', match:82, crafts:['ceramics','textiles','jewelry'], blurb:"Grand march\u00e9 de l'artisanat au c\u0153ur de la ville ocre. 100K+ visiteurs attendus.", img:'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=500&h=200&fit=crop'},
+      {id:'e5', title:"Festival de l'Argan Souss-Massa", type:'Festival', location:'Agadir, Maroc', date:'Sep 5-7', day:'05', mon:'Sep', fee:'Gratuit', spots:'25 stands disponibles', match:78, crafts:['textiles','ceramics','baking'], blurb:'C\u00e9l\u00e9bration du patrimoine argan avec les coop\u00e9ratives de Souss-Massa. 1 101 coop\u00e9ratives repr\u00e9sent\u00e9es.', img:'https://images.unsplash.com/photo-1533240332313-0db49b459ad6?w=500&h=200&fit=crop'},
+      {id:'e6', title:'Expo Coop\u00e9ratives ODCO', type:'Expo', location:'Rabat, Maroc', date:'Oct 10-12', day:'10', mon:'Oct', fee:'Adh\u00e9sion ODCO', spots:'50 stands disponibles', match:73, crafts:['all'], blurb:'Exposition des 65 315 coop\u00e9ratives marocaines. 12 744 coop\u00e9ratives artisanat, 91 514 adh\u00e9rents.', img:'https://images.unsplash.com/photo-1497366216548-37526070297c?w=500&h=200&fit=crop'}
+    ];
+
+
+    this.state = {
+      screen:'login', role:'artisan', loginRole:'artisan', lang:'da',
+      email:'', password:'',
+      artisanTab:'chat', orgTab:'discover', orgView:'grid', viewArtisan:null,
+      messages:[], typing:false, input:'', listening:false, voiceMode:false, shouldSpeak:false,
+      applyEvent:null, attach:{}, pitch:'',
+      applied:{}, saved:{}, search:'', craftFilter:'all', toast:'',
+      isMobile: (typeof window!=='undefined' && window.innerWidth<=760)
+    };
+  }
+
+  componentDidMount(){
+    this._onResize=()=>{ const m=window.innerWidth<=760; if(m!==this.state.isMobile) this.setState({isMobile:m}); };
+    window.addEventListener('resize', this._onResize);
+    const first = this.self().name.split(' ')[0];
+    this.setState({ messages:[{role:'bot', text:this.greetingText(first)}] });
+    if (this.props.startInApp) {
+      const r = this.props.defaultRole === 'organizer' ? 'organizer' : 'artisan';
+      this.setState({ screen:'app', role:r });
+    }
+    
+    // Pre-load Web Speech Synthesis voices (solves Chrome/Edge async loading bug)
+    if (typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.getVoices();
+      if (window.speechSynthesis.onvoiceschanged !== undefined) {
+        window.speechSynthesis.onvoiceschanged = () => {
+          window.speechSynthesis.getVoices();
+        };
+      }
+    }
+  }
+  componentWillUnmount(){ window.removeEventListener('resize', this._onResize); }
+  componentDidUpdate(){ if(this.msgEl){ this.msgEl.scrollTop = this.msgEl.scrollHeight; } }
+
+  cl(key){ const m=this.CRAFT_L[key]; return m ? (m[this.state.lang]||m.en) : key; }
+  evType(t){ const m=this.EVTYPE[t]; return m ? (m[this.state.lang]||m.en) : t; }
+  craftWord(key){ return this.state.lang==='en' ? this.CRAFTS[key].label.toLowerCase() : this.cl(key); }
+
+  cycleLang(){
+    const order=['en','da','ar']; const next=order[(order.indexOf(this.state.lang)+1)%3];
+    this.setState({lang:next}, ()=>{
+      if(this.state.messages.length<=1){
+        const first=this.self().name.split(' ')[0];
+        this.setState({messages:[{role:'bot', text:this.greetingText(first)}]});
+      }
+    });
+  }
+
+  greetingText(first){
+    const n=this.props.assistantName||'Maalem'; const l=this.state.lang;
+    if(l==='da') return `Salam, ${first}! Ana ${n}, l'assistant dyalek dial l'artisanat. Goulia 3la khedmtek \u2014 wla 9lib 3la suggestion \u2014 o ghadi nl9a lik fin tdir.`;
+    if(l==='ar') return `\u0633\u0644\u0627\u0645\u060c ${first}! \u0623\u0646\u0627 ${n}\u060c \u0627\u0644\u0645\u0633\u0627\u0639\u062f \u062f\u064a\u0627\u0644\u0643 \u062f\u064a\u0627\u0644 \u0627\u0644\u0635\u0646\u0639\u0629. \u0642\u0648\u0644\u064a\u0627 \u0639\u0644\u0649 \u062e\u062f\u0645\u062a\u0643 \u2014 \u0648\u0644\u0627 \u0642\u0644\u0628 \u0639\u0644\u0649 \u0627\u0642\u062a\u0631\u0627\u062d \u2014 \u0648\u063a\u0627\u062f\u064a \u0646\u0644\u0642\u0627 \u0644\u064a\u0643 \u0641\u064a\u0646 \u062a\u062f\u064a\u0631.`;
+    return `Salam, ${first}! I'm ${n}, your craft companion. Tell me about your work \u2014 or tap a suggestion \u2014 and I'll find events where it belongs.`;
+  }
+
+  self(){ return this.ARTISANS[0]; }
+  eventById(id){ return this.EVENTS.find(e=>e.id===id); }
+  artisanById(id){ return this.ARTISANS.find(a=>a.id===id); }
+
+  matchedFor(craftKey){
+    return this.EVENTS
+      .filter(e=>e.crafts.indexOf('all')>=0 || e.crafts.indexOf(craftKey)>=0)
+      .slice().sort((a,b)=>b.match-a.match);
+  }
+
+  botReply(text){
+    const t=(text||'').toLowerCase(); const l=this.state.lang; const self=this.self();
+    const craft=this.craftWord(self.craft); const loc=self.location; const first=self.name.split(' ')[0];
+    if(/portfolio|profile|add|improve|piece|photo|showcase|zayen|\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648|\u0635\u0648\u0631|\u0637\u0648\u0631/.test(t)){
+      if(l==='da') return {role:'bot', text:`Le portfolio dyalek mzyan. Bash dir l'impression l jury, zid 2-3 photos dial process o wa7da kbira \u2014 7el le portfolio dyalek o dir les photos f la grille. Bghiti nl9a lik des \u00e9v\u00e9nements 7ta?`};
+      if(l==='ar') return {role:'bot', text:`\u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648 \u062f\u064a\u0627\u0644\u0643 \u0645\u0632\u064a\u0627\u0646. \u0628\u0627\u0634 \u062a\u0623\u062b\u0631 \u0641\u0627\u0644\u0644\u062c\u0646\u0629\u060c \u0632\u064a\u062f 2-3 \u062a\u0635\u0627\u0648\u0631 \u062f\u064a\u0627\u0644 \u0627\u0644\u062e\u062f\u0645\u0629 \u0648\u0642\u0637\u0639\u0629 \u0643\u0628\u064a\u0631\u0629 \u0648\u062d\u062f\u0629 \u2014 \u062d\u0644 \u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648 \u062f\u064a\u0627\u0644\u0643 \u0648\u062f\u064a\u0631 \u0627\u0644\u062a\u0635\u0627\u0648\u0631. \u0628\u063a\u064a\u062a\u064a \u0646\u0644\u0642\u0627 \u0644\u064a\u0643 \u0645\u0646\u0627\u0633\u0628\u0627\u062a \u062d\u062a\u0649\u061f`};
+      return {role:'bot', text:`Your portfolio leans strong on tableware. To win juried events, add 2\u20133 process shots and one large statement piece \u2014 open My Portfolio and drop new photos straight into the grid. Want me to find events while you\u2019re at it?`};
+    }
+    if(/hello|hi|salam|hey|marhaba|\u0633\u0644\u0627\u0645|\u0627\u0647\u0644\u0627/.test(t)){
+      if(l==='da') return {role:'bot', text:`Salam ${first}! Wajed bash tl9a l'\u00e9v\u00e9nement jay? N9der nl9a lik fin tmchi khedmtek dial ${craft} f des secondes.`};
+      if(l==='ar') return {role:'bot', text:`\u0633\u0644\u0627\u0645 ${first}! \u0648\u0627\u062c\u062f \u0628\u0627\u0634 \u062a\u0644\u0642\u0627 \u0627\u0644\u0645\u0646\u0627\u0633\u0628\u0629 \u0627\u0644\u062c\u0627\u064a\u0629\u061f \u0646\u0642\u062f\u0631 \u0646\u0644\u0642\u0627 \u0644\u064a\u0643 \u0641\u064a\u0646 \u062a\u0645\u0634\u064a \u062e\u062f\u0645\u062a\u0643 \u062f\u064a\u0627\u0644 ${craft} \u0641\u062b\u0648\u0627\u0646\u064a.`};
+      return {role:'bot', text:`Salam ${first}! Ready to find your next event? I can match openings to your ${craft} work in seconds.`};
+    }
+    if(/event|fair|market|festival|find|match|apply|near|expo|booth|holiday|\u00e9v\u00e9nement|foire|souk|9rib|l9a|\u0645\u0646\u0627\u0633\u0628\u0629|\u0645\u0639\u0631\u0636|\u0633\u0648\u0642|\u0644\u0642\u0627|\u0642\u0631\u064a\u0628/.test(t)){
+      if(l==='da') return {role:'bot', text:`3la 7sab khedmtek dial ${craft} f ${loc}, hahuma a7sen les matchs li 7allin daba:`, kind:'events'};
+      if(l==='ar') return {role:'bot', text:`\u0639\u0644\u0649 \u062d\u0633\u0627\u0628 \u062e\u062f\u0645\u062a\u0643 \u062f\u064a\u0627\u0644 ${craft} \u0641${loc}\u060c \u0647\u0627\u0647\u0648\u0645\u0627 \u0623\u062d\u0633\u0646 \u0627\u0644\u0645\u0637\u0627\u0628\u0642\u0627\u062a \u0644\u064a \u062d\u0627\u0644\u064a\u0646 \u062f\u0627\u0628\u0627:`, kind:'events'};
+      return {role:'bot', text:`Based on your ${craft} work in ${loc}, here are the strongest matches open right now:`, kind:'events'};
+    }
+    if(l==='da') return {role:'bot', text:`N9der nl9a \u00e9v\u00e9nements li y9adou khedmtek, nsawb la demande, wla nzayen le portfolio. Hahuma li y9adou khedmtek dial ${craft} lyoma:`, kind:'events'};
+    if(l==='ar') return {role:'bot', text:`\u0646\u0642\u062f\u0631 \u0646\u0644\u0642\u0627 \u0645\u0646\u0627\u0633\u0628\u0627\u062a \u0644\u064a \u064a\u0642\u0627\u062f\u0648 \u062e\u062f\u0645\u062a\u0643\u060c \u0646\u0635\u0627\u0648\u0628 \u0627\u0644\u0637\u0644\u0628\u060c \u0648\u0644\u0627 \u0646\u0632\u064a\u0646 \u0627\u0644\u0628\u0648\u0631\u062a\u0641\u0648\u0644\u064a\u0648. \u0647\u0627\u0647\u0648\u0645\u0627 \u0644\u064a \u064a\u0642\u0627\u062f\u0648 \u062e\u062f\u0645\u062a\u0643 \u062f\u064a\u0627\u0644 ${craft} \u0627\u0644\u064a\u0648\u0645:`, kind:'events'};
+    return {role:'bot', text:`I can find events that fit your craft, draft your application, or sharpen your portfolio. Here\u2019s what matches your ${craft} work today:`, kind:'events'};
+  }
+
+  async sendMessage(raw){
+    const text=(raw||'').trim(); if(!text) return;
+    const newMsg = {role:'user', text};
+    const updatedMessages = this.state.messages.concat([newMsg]);
+    this.setState({messages:updatedMessages, input:'', typing:true});
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: updatedMessages, lang: this.state.lang })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        this.setState(s => ({
+          messages: s.messages.concat([{ role: 'bot', text: data.text, kind: data.kind }]),
+          typing: false
+        }));
+        if (this.state.voiceMode || this.state.shouldSpeak) {
+          this.speak(data.audioText || data.text, data.text);
+          this.setState({ shouldSpeak: false });
+        }
+      } else {
+        throw new Error('API error');
+      }
+    } catch(e) {
+      const reply=this.botReply(text);
+      clearTimeout(this._typeTO);
+      this._typeTO=setTimeout(()=>{
+        this.setState(s=>({messages:s.messages.concat([reply]), typing:false}));
+        if (this.state.voiceMode || this.state.shouldSpeak) {
+          this.speak(reply.text, reply.text);
+          this.setState({ shouldSpeak: false });
+        }
+      }, 300);
+    }
+  }
+
+  startVoice(){
+    if(this.state.listening) return;
+    this._gotResult = false;
+    this.setState({listening:true, voiceMode:true});
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const langMap={en:'en-US', da:'ar-MA', ar:'ar-MA'};
+    
+    if(!SR) {
+      this.flashToast("Speech recognition is not supported in this browser. Please use Chrome, Safari, or Edge.");
+      this.setState({listening:false, voiceMode:false});
+      return;
+    }
+    
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    
+    try {
+      const r = new SR();
+      r.lang = langMap[this.state.lang] || 'en-US';
+      r.interimResults = false;
+      r.maxAlternatives = 1;
+      this._rec = r;
+      
+      r.onstart = () => {
+        clearTimeout(this._voiceTO);
+        this._voiceTO = setTimeout(() => {
+          if (this.state.listening) {
+            this.flashToast("Speech input timed out.");
+            this.cancelVoice();
+          }
+        }, 15000);
+      };
+      
+      r.onspeechstart = () => {
+        clearTimeout(this._voiceTO);
+        clearTimeout(this._silenceTO);
+      };
+      
+      r.onspeechend = () => {
+        clearTimeout(this._silenceTO);
+        this._silenceTO = setTimeout(() => {
+          if (this.state.listening) {
+            try { r.stop(); } catch(err) {}
+          }
+        }, 5000); // Auto cutoff 5 seconds after speech ends
+      };
+      
+      r.onresult = (e) => {
+        this._gotResult = true;
+        const tx = e.results[0][0].transcript;
+        clearTimeout(this._voiceTO);
+        clearTimeout(this._silenceTO);
+        this.setState({listening:false, shouldSpeak:true});
+        this.sendMessage(tx);
+      };
+      
+      r.onerror = (e) => {
+        console.error("Speech Recognition Error:", e.error);
+        clearTimeout(this._voiceTO);
+        clearTimeout(this._silenceTO);
+        this.setState({listening:false});
+        
+        if (e.error === 'not-allowed') {
+          this.flashToast("Microphone permission denied. Please allow mic access in your browser settings.");
+        } else if (e.error === 'no-speech') {
+          this.flashToast("No speech detected. Please speak clearly into your mic.");
+        } else if (e.error === 'network') {
+          this.flashToast("Speech recognition network error. Google's speech service is offline or unreachable.");
+        } else {
+          this.flashToast("Microphone error: " + e.error);
+        }
+      };
+      
+      r.onend = () => {
+        clearTimeout(this._voiceTO);
+        clearTimeout(this._silenceTO);
+        if (!this._gotResult && this.state.listening) {
+          this.setState({listening:false, voiceMode:false});
+        }
+      };
+      
+      r.start();
+      
+      this._voiceTO = setTimeout(() => {
+        if (this.state.listening) {
+          try { r.stop(); } catch(err) {}
+          this.flashToast("No response from microphone. Try refreshing the page.");
+          this.setState({listening:false, voiceMode:false});
+        }
+      }, 10000);
+      
+    } catch(e) {
+      console.error("Speech Recognition initialization error:", e);
+      this.flashToast("Could not start microphone: " + e.message);
+      this.setState({listening:false, voiceMode:false});
+    }
+  }
+
+  toggleVoiceMode() {
+    const next = !this.state.voiceMode;
+    this.setState({ voiceMode: next });
+    if (!next && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  toArabicScript(text) {
+    const dict = {
+      "salam": "سلام",
+      "sadiqi": "صديقي",
+      "sadiqti": "صديقتي",
+      "le": "",
+      "la": "",
+      "les": "",
+      "un": "",
+      "une": "",
+      "des": "شي",
+      "portfolio": "البورتفوليو",
+      "dyalek": "ديالك",
+      "mzyan": "مزيان",
+      "bash": "باش",
+      "dir": "دير",
+      "l'impression": "الانطباع",
+      "l": "لـ",
+      "jury": "اللجنة",
+      "zid": "زيد",
+      "photos": "تصاور",
+      "dial": "ديال",
+      "process": "الخدمة",
+      "wa7da": "وحدة",
+      "kbira": "كبيرة",
+      "7el": "حل",
+      "grille": "الشبكة",
+      "bghiti": "بغيتي",
+      "nl9a": "نلقى",
+      "lik": "ليك",
+      "events": "مناسبات",
+      "7ta": "حتى",
+      "ana": "أنا",
+      "assistant": "المساعد",
+      "khedmtek": "خدمتك",
+      "fin": "فين",
+      "tdir": "تدير",
+      "n9der": "نقدر",
+      "tmchi": "تمشي",
+      "foires": "معارض",
+      "9rib": "قريب",
+      "mni": "مني",
+      "y9adou": "يقادو",
+      "kifash": "كيفاش",
+      "nzayen": "نزين",
+      "daba": "دابا",
+      "souk": "سوق",
+      "bzaff": "بزاف",
+      "wla": "ولا"
+    };
+    
+    let words = text.toLowerCase().split(/\b/);
+    let result = words.map(w => {
+      let cleaned = w.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+      if (!cleaned) return w;
+      if (dict[cleaned]) {
+        return dict[cleaned];
+      }
+      let ar = cleaned;
+      ar = ar.replace(/ch|sh/g, "ش");
+      ar = ar.replace(/kh/g, "خ");
+      ar = ar.replace(/gh/g, "غ");
+      ar = ar.replace(/7/g, "ح");
+      ar = ar.replace(/3/g, "ع");
+      ar = ar.replace(/9/g, "ق");
+      ar = ar.replace(/2/g, "ء");
+      ar = ar.replace(/5/g, "خ");
+      ar = ar.replace(/ou/g, "و");
+      ar = ar.replace(/a/g, "ا");
+      ar = ar.replace(/b/g, "ب");
+      ar = ar.replace(/t/g, "ت");
+      ar = ar.replace(/j/g, "ج");
+      ar = ar.replace(/d/g, "د");
+      ar = ar.replace(/r/g, "ر");
+      ar = ar.replace(/z/g, "ز");
+      ar = ar.replace(/s/g, "س");
+      ar = ar.replace(/f/g, "ف");
+      ar = ar.replace(/k/g, "ك");
+      ar = ar.replace(/l/g, "ل");
+      ar = ar.replace(/m/g, "م");
+      ar = ar.replace(/n/g, "ن");
+      ar = ar.replace(/h/g, "ه");
+      ar = ar.replace(/w/g, "و");
+      ar = ar.replace(/y/g, "ي");
+      ar = ar.replace(/i|e|o|u/g, "");
+      return ar;
+    }).join("");
+    return result;
+  }
+
+  speak(text, fallbackText, isFallback = false) {
+    if (!window.speechSynthesis) return;
+    
+    if (window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+    }
+
+    const targetText = isFallback ? (fallbackText || text) : (text || fallbackText);
+    const cleanText = targetText.replace(/[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2011-\u26FF]|\uD83E[\uDC00-\uDFFF]/g, '').replace(/[*_`#]/g, '');
+    
+    const voices = window.speechSynthesis.getVoices() || [];
+    const hasArabicVoice = !isFallback && (voices.length === 0 || voices.some(v => v.lang.startsWith('ar')));
+    
+    let textToSpeak = cleanText;
+    const hasArabic = /[\u0600-\u06FF]/.test(cleanText);
+    
+    if (this.state.lang === 'da' && !hasArabic && hasArabicVoice) {
+      textToSpeak = this.toArabicScript(cleanText);
+    }
+
+    const utterance = new SpeechSynthesisUtterance(textToSpeak);
+    const isArabic = /[\u0600-\u06FF]/.test(textToSpeak);
+    
+    if (isArabic && hasArabicVoice) {
+      const hasArMA = voices.some(v => v.lang.startsWith('ar-MA'));
+      utterance.lang = hasArMA ? 'ar-MA' : 'ar-SA';
+    } else {
+      const langMap = { en: 'en-US', da: 'fr-FR', ar: 'ar-SA' };
+      utterance.lang = langMap[this.state.lang] || 'en-US';
+    }
+    
+    if (voices.length > 0) {
+      let voice;
+      if (isArabic && hasArabicVoice) {
+        voice = voices.find(v => (v.lang === 'ar-MA' || v.lang.startsWith('ar-MA')) && v.localService) ||
+                voices.find(v => v.lang.startsWith('ar') && v.localService) ||
+                voices.find(v => v.lang.startsWith('ar'));
+      } else {
+        voice = voices.find(v => v.lang.startsWith(utterance.lang) && v.localService) ||
+                voices.find(v => v.lang.startsWith(utterance.lang));
+      }
+      if (voice) utterance.voice = voice;
+    }
+
+    const startTime = Date.now();
+    utterance.onend = () => {
+      const elapsed = Date.now() - startTime;
+      if (elapsed < 200) {
+        console.warn("Speech synthesis finished too quickly (" + elapsed + "ms).");
+        if (!isFallback && !this._cancelledSpeak) {
+          console.log("Attempting fallback to local offline voice...");
+          setTimeout(() => {
+            this.speak(text, fallbackText, true);
+          }, 150);
+          return;
+        }
+        if (!this._cancelledSpeak) {
+          this.setState({ voiceMode: false });
+        }
+        return;
+      }
+      if (this.state.voiceMode) {
+        setTimeout(() => {
+          if (this.state.voiceMode && !this.state.listening) {
+            this.startVoice();
+          }
+        }, 400);
+      }
+    };
+    
+    utterance.onerror = (e) => {
+      const errName = e ? e.error : "unknown";
+      console.error("SpeechSynthesisUtterance Error:", errName);
+      if (this._cancelledSpeak || errName === 'interrupted' || errName === 'canceled') {
+        return;
+      }
+      if (!isFallback) {
+        console.log("Attempting fallback to local offline voice due to error: " + errName);
+        setTimeout(() => {
+          this.speak(text, fallbackText, true);
+        }, 150);
+        return;
+      }
+      this.setState({ voiceMode: false });
+    };
+
+    // Prevent Chrome SpeechSynthesis engine freeze due to overlapping cancels
+    if (window.speechSynthesis.speaking) {
+      this._cancelledSpeak = true;
+      window.speechSynthesis.cancel();
+      setTimeout(() => {
+        this._cancelledSpeak = false;
+        window.speechSynthesis.speak(utterance);
+      }, 100);
+    } else {
+      this._cancelledSpeak = false;
+      window.speechSynthesis.speak(utterance);
+    }
+  }
+
+  stopVoiceAndSubmit(){
+    clearTimeout(this._voiceTO);
+    clearTimeout(this._silenceTO);
+    if(this._rec){
+      try{this._rec.stop();}catch(e){}
+    }
+  }
+
+  cancelVoice(){
+    clearTimeout(this._voiceTO);
+    clearTimeout(this._silenceTO);
+    try{this._rec&&this._rec.stop();}catch(e){}
+    this.setState({listening:false, voiceMode:false});
+    if (window.speechSynthesis) {
+      this._cancelledSpeak = true;
+      window.speechSynthesis.cancel();
+    }
+  }
+
+  openApply(ev){
+    const self=this.self(); const l=this.state.lang;
+    const craft=this.craftWord(self.craft); const tags=self.tags.slice(0,2).join(' and ').toLowerCase();
+    let pitch;
+    if(l==='da') pitch=`Salam! Ana ${self.name}, sane3 dial ${craft} f ${self.location}. Bghit n\u0161arek f ${ev.title} \u2014 l'khedma dyali f ${tags}, o kanthenna t3jeb l'public dyalkom. N9der njib booth kamel b des prix mokhtalfin.`;
+    else if(l==='ar') pitch=`\u0633\u0644\u0627\u0645! \u0623\u0646\u0627 ${self.name}\u060c \u0635\u0627\u0646\u0639 \u062f\u064a\u0627\u0644 ${craft} \u0641 ${self.location}. \u0628\u063a\u064a\u062a \u0646\u0634\u0627\u0631\u0643 \u0641 ${ev.title} \u2014 \u0627\u0644\u062e\u062f\u0645\u0629 \u062f\u064a\u0627\u0644\u064a \u0641 ${tags}\u060c \u0648\u0643\u0646\u0638\u0646 \u062a\u0639\u062c\u0628 \u0627\u0644\u062c\u0645\u0647\u0648\u0631 \u062f\u064a\u0627\u0644\u0643\u0645. \u0646\u0642\u062f\u0631 \u0646\u062c\u064a\u0628 \u0628\u0648\u062b \u0643\u0627\u0645\u0644 \u0628\u0623\u062b\u0645\u0646\u0629 \u0645\u062e\u062a\u0644\u0641\u0629.`;
+    else pitch=`Hi! I'm ${self.name}, a ${craft} maker based in ${self.location}. I'd love to join ${ev.title} \u2014 my work centres on ${tags}, and I think it would resonate with your audience. I can bring a full booth setup with a range of price points.`;
+    this.setState({applyEvent:ev.id, attach:{0:true,1:true,2:true}, pitch});
+  }
+  closeApply(){ this.setState({applyEvent:null}); }
+  togglePiece(i){ this.setState(s=>({attach:Object.assign({},s.attach,{[i]:!s.attach[i]})})); }
+  submitApply(){
+    const ev=this.eventById(this.state.applyEvent); const l=this.state.lang;
+    const n=Object.keys(this.state.attach).filter(k=>this.state.attach[k]).length;
+    let msg;
+    if(l==='da') msg=`Daba! La demande dyalek l ${ev.title} tsiftat, m3a ${n} pieces. Ghadi ngolik mli yjawbo.`;
+    else if(l==='ar') msg=`\u062f\u0627\u0628\u0627! \u0627\u0644\u0637\u0644\u0628 \u062f\u064a\u0627\u0644\u0643 \u0644 ${ev.title} \u062a\u0635\u064a\u0641\u0637\u060c \u0645\u0639 ${n} \u0642\u0637\u0639. \u063a\u0627\u062f\u064a \u0646\u0642\u0648\u0644\u0643 \u0645\u0644\u064a \u064a\u062c\u0627\u0648\u0628\u0648.`;
+    else msg=`Done \u2014 your application to ${ev.title} is in, with ${n} portfolio piece${n===1?'':'s'} attached. I'll let you know the moment they respond.`;
+    this.setState(s=>({
+      applied:Object.assign({},s.applied,{[ev.id]:true}),
+      applyEvent:null,
+      messages:s.messages.concat([{role:'bot', text:msg}])
+    }));
+    this.flashToast(this.toastText('appSent', ev.title));
+  }
+  toastText(kind, x){
+    const l=this.state.lang;
+    const M={
+      appSent:{en:`Application sent to ${x}`, da:`La demande tsiftat l ${x}`, ar:`\u0627\u0644\u0637\u0644\u0628 \u062a\u0635\u064a\u0641\u0637 \u0644 ${x}`},
+      invite:{en:`Invitation sent to ${x}`, da:`L'invitation tsiftat l ${x}`, ar:`\u0627\u0644\u062f\u0639\u0648\u0629 \u062a\u0635\u064a\u0641\u0637 \u0644 ${x}`},
+      share:{en:'Profile link copied to clipboard', da:'Le lien dial le profil t-copia', ar:'\u0627\u0644\u0631\u0627\u0628\u0637 \u062f\u064a\u0627\u0644 \u0627\u0644\u0628\u0631\u0648\u0641\u0627\u064a\u0644 \u062a\u0643\u0648\u0628\u064a\u0627'},
+      edit:{en:'Edit mode \u2014 tap any photo to replace it', da:'Mode \u00e9dition \u2014 9lik 3la chi photo bach tbedelha', ar:'\u0648\u0636\u0639 \u0627\u0644\u062a\u0639\u062f\u064a\u0644 \u2014 \u0642\u0644\u0650\u0643 \u0639\u0644\u0649 \u0634\u064a \u0635\u0648\u0631\u0629 \u0628\u0627\u0634 \u062a\u0628\u062f\u0644\u0647\u0627'},
+      message:{en:`Message sent to ${x}`, da:`Message tsift l ${x}`, ar:`\u0631\u0627\u0633\u0644\u062a\u064a ${x}`}
+    };
+    return (M[kind]||{})[l] || (M[kind]||{}).en;
+  }
+  flashToast(msg){ clearTimeout(this._tt); this.setState({toast:msg}); this._tt=setTimeout(()=>this.setState({toast:''}), 2600); }
+  invite(a){ this.flashToast(this.toastText('invite', a.name)); }
+  toggleSave(a){ this.setState(s=>({saved:Object.assign({},s.saved,{[a.id]:!s.saved[a.id]})})); }
+  viewProfile(a){ this.setState({orgView:'profile', viewArtisan:a.id}); }
+
+  buildProfile(a, isOwn){
+    const cm=this.CRAFTS[a.craft]; const T=this.T[this.state.lang]||this.T.en;
+    return {
+      name:a.name, craft:this.cl(a.craft), accent:cm.accent, soft:cm.soft, bannerBg:cm.bg,
+      location:a.location, rating:a.rating, reviews:a.reviews, bio:a.bio, tags:a.tags,
+      initial:a.name[0],
+      stats:[{value:a.years+' yrs', label:T.statCrafting},{value:a.events, label:T.statEventsDone},{value:a.rating, label:T.statRating}],
+      pieces:this.PIECES[a.craft].map((cap,i)=>({slotId:'pf_'+a.id+'_'+i, caption:cap, img:this.PORTFOLIO_IMGS[a.craft][i]})),
+      reviewsList:a.reviewsList,
+      showBack:!isOwn,
+      back:()=>this.setState({orgView:'grid', viewArtisan:null}),
+      primaryLabel: isOwn?T.shareProfile:T.inviteToEvent,
+      primaryAction: isOwn ? ()=>this.flashToast(this.toastText('share')) : ()=>this.invite(a),
+      secondaryLabel: isOwn?T.editProfile:T.messageLabel,
+      secondaryAction: isOwn ? ()=>this.flashToast(this.toastText('edit')) : ()=>this.flashToast(this.toastText('message', a.name))
+    };
+  }
+
+  seg(active){
+    const base={flex:1, padding:'11px', borderRadius:'9px', border:'none', cursor:'pointer', fontSize:'14.5px', transition:'all .15s'};
+    return active ? Object.assign({},base,{background:'#fff', color:'#E0541F', fontWeight:600, boxShadow:'0 1px 4px rgba(0,0,0,.08)'})
+                  : Object.assign({},base,{background:'transparent', color:'#8A8178', fontWeight:500});
+  }
+  segSmall(active){
+    const base={padding:'6px 14px', borderRadius:'7px', border:'none', cursor:'pointer', fontSize:'13.5px', transition:'all .15s'};
+    return active ? Object.assign({},base,{background:'#fff', color:'#E0541F', fontWeight:600, boxShadow:'0 1px 3px rgba(0,0,0,.1)'})
+                  : Object.assign({},base,{background:'transparent', color:'#8A8178', fontWeight:500});
+  }
+  nav(active){
+    const base={display:'flex', alignItems:'center', gap:'11px', padding:'11px 13px', borderRadius:'10px', cursor:'pointer', fontSize:'15px', fontWeight:500, color:'#6c635a', background:'transparent', border:'none', width:'100%', textAlign:'start'};
+    return active ? Object.assign({},base,{background:'#FDEEE6', color:'#E0541F', fontWeight:600}) : base;
+  }
+  chip(active){
+    const base={padding:'8px 15px', borderRadius:'999px', cursor:'pointer', fontSize:'13.5px', fontWeight:500, transition:'all .15s'};
+    return active ? Object.assign({},base,{background:'#F26638', color:'#fff', border:'1px solid #F26638'})
+                  : Object.assign({},base,{background:'#fff', color:'#6c635a', border:'1px solid #E6DBCC'});
+  }
+  mnav(active){
+    const base={flex:1, display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'4px', padding:'10px 4px 9px', border:'none', background:'transparent', cursor:'pointer', fontSize:'11.5px', fontWeight:500, color:'#A89E91', WebkitTapHighlightColor:'transparent'};
+    return active ? Object.assign({},base,{color:'#E0541F', fontWeight:600}) : base;
+  }
+
+  renderVals(){
+    const st=this.state;
+    const T=this.T[st.lang]||this.T.en;
+    const dir = st.lang==='ar' ? 'rtl' : 'ltr';
+    const langLabel = st.lang==='en' ? 'EN' : (st.lang==='da' ? 'Darija' : '\u0627\u0644\u0639\u0631\u0628\u064a\u0629');
+    const isLogin = st.screen==='login';
+    const isApp = st.screen==='app';
+    const isArtisan = st.role==='artisan';
+    const isOrganizer = st.role==='organizer';
+    const self=this.self();
+
+    const chatItems = st.messages.map(m=>{
+      const isUser = m.role==='user';
+      const bubbleStyle = isUser
+        ? {alignSelf:'flex-end', maxWidth:'78%', background:'#F26638', color:'#fff', padding:'12px 17px', borderRadius:'16px 16px 4px 16px', fontSize:'15px', lineHeight:'1.5', boxShadow:'0 3px 12px rgba(242,102,56,.22)'}
+        : {alignSelf:'flex-start', maxWidth:'85%', background:'#fff', color:'#2A2724', padding:'13px 18px', borderRadius:'16px 16px 16px 4px', fontSize:'15px', lineHeight:'1.55', border:'1px solid #EFE6D9', boxShadow:'0 2px 10px rgba(42,39,36,.04)'};
+      const rowStyle = {display:'flex', flexDirection:'column', alignItems: isUser?'flex-end':'flex-start', gap:'10px', animation:'fadeUp .25s ease'};
+      const hasEvents = m.kind==='events';
+      let events=[];
+      if(hasEvents){
+        events=this.matchedFor(self.craft).slice(0,3).map(e=>{
+          const done=!!st.applied[e.id];
+          return {
+            title:e.title, type:this.evType(e.type), dateLoc:e.date+' \u00b7 '+e.location, blurb:e.blurb, match:e.match,
+            feeSpots:e.fee+' \u00b7 '+e.spots,
+            img:e.img||'',
+            apply:()=>this.openApply(e),
+            applyLabel: done?T.appliedTag:T.applyNow,
+            applyStyle: done
+              ? {padding:'9px 18px', background:'#E1EEED', color:'#1A6261', border:'none', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'default'}
+              : {padding:'9px 18px', background:'#F26638', color:'#fff', border:'none', borderRadius:'10px', fontSize:'14px', fontWeight:600, cursor:'pointer'}
+          };
+        });
+      }
+      return {isUser, text:m.text, rowStyle, bubbleStyle, hasEvents, events};
+    });
+
+    const prompts=T.prompts.map(p=>({text:p, send:()=>this.sendMessage(p)}));
+
+    const matched=this.matchedFor(self.craft);
+    const myEvents=matched.map((e,i)=>{
+      let status, sStyle;
+      if(st.applied[e.id]){ status=T.statusApplied; sStyle={background:'#FDEEE6', color:'#E0541F'}; }
+      else if(i===0){ status=T.statusInvited; sStyle={background:'#E1EEED', color:'#1A6261'}; }
+      else { status=T.statusOpen; sStyle={background:'#F6EEE4', color:'#8A8178'}; }
+      const cm=this.CRAFTS[self.craft];
+      return {title:e.title, dateLoc:e.date+' \u00b7 '+e.location, feeSpots:e.fee, day:e.day, mon:e.mon,
+        dateBg:cm.soft, dateColor:cm.accent,
+        status, statusStyle:Object.assign({padding:'6px 14px', borderRadius:'999px', fontSize:'13px', fontWeight:600, whiteSpace:'nowrap'}, sStyle)};
+    });
+
+    const q=st.search.trim().toLowerCase();
+    const filteredArtisans=this.ARTISANS.filter(a=>{
+      if(st.craftFilter!=='all' && a.craft!==st.craftFilter) return false;
+      if(q){
+        const hay=(a.name+' '+this.CRAFTS[a.craft].label+' '+a.location+' '+a.tags.join(' ')+' '+a.tagline).toLowerCase();
+        if(hay.indexOf(q)<0) return false;
+      }
+      return true;
+    }).map(a=>{
+      const cm=this.CRAFTS[a.craft]; const sv=!!st.saved[a.id];
+      return {name:a.name, craft:this.cl(a.craft), location:a.location, rating:a.rating, tagline:a.tagline, accent:cm.accent, thumbBg:cm.bg, initial:a.name[0],
+        view:()=>this.viewProfile(a), invite:()=>this.invite(a), toggleSave:()=>this.toggleSave(a),
+        saveFill: sv?'#fff':'none',
+        saveStyle:{position:'absolute', top:'12px', insetInlineEnd:'12px', width:'32px', height:'32px', borderRadius:'9px', border:'none', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center', background: sv?'rgba(242,102,56,.95)':'rgba(255,255,255,.85)', color: sv?'#fff':'#8A8178', backdropFilter:'blur(2px)'}};
+    });
+
+    const chipDefs=[['all',T.all]].concat(Object.keys(this.CRAFTS).map(k=>[k,this.cl(k)]));
+    const craftChips=chipDefs.map(([k,label])=>({label, style:this.chip(st.craftFilter===k), set:()=>this.setState({craftFilter:k})}));
+
+    const savedList=this.ARTISANS.filter(a=>st.saved[a.id]);
+    const shortlistArtisans=savedList.map(a=>({name:a.name, craft:this.cl(a.craft), location:a.location, accent:this.CRAFTS[a.craft].accent, initial:a.name[0], view:()=>this.viewProfile(a), invite:()=>this.invite(a)}));
+
+    let profile=this.buildProfile(self,true);
+    if(isOrganizer && st.orgView==='profile' && st.viewArtisan){ profile=this.buildProfile(this.artisanById(st.viewArtisan), false); }
+
+    const applyOpen=!!st.applyEvent;
+    let applyTitle='',applyMeta='',pieceOptions=[],attachSummary='';
+    if(applyOpen){
+      const ev=this.eventById(st.applyEvent);
+      applyTitle=ev.title; applyMeta=ev.date+' \u00b7 '+ev.location+' \u00b7 '+ev.fee;
+      pieceOptions=this.PIECES[self.craft].map((cap,i)=>{
+        const on=!!st.attach[i];
+        return {caption:cap, check:on?'\u2713':'', toggle:()=>this.togglePiece(i),
+          style:{display:'flex', alignItems:'center', gap:'10px', padding:'11px 12px', borderRadius:'11px', cursor:'pointer', textAlign:'start', border:'1px solid '+(on?'#F26638':'#E6DBCC'), background:on?'#FDEEE6':'#fff', color:'#3a352f'},
+          boxStyle:{width:'20px', height:'20px', flex:'none', borderRadius:'6px', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'13px', fontWeight:700, color:'#fff', background:on?'#F26638':'#E6DBCC'}};
+      });
+      const n=Object.keys(st.attach).filter(k=>st.attach[k]).length;
+      const pw = st.lang==='en' ? (n+' piece'+(n===1?'':'s')+' attached') : (st.lang==='da' ? (n+' pieces zidti') : (n+' \u0642\u0637\u0639 \u0632\u062f\u062a\u064a'));
+      attachSummary=pw;
+    }
+
+    const viewChat = isArtisan && st.artisanTab==='chat';
+    const viewEvents = isArtisan && st.artisanTab==='events';
+    const viewProfile = (isArtisan && st.artisanTab==='profile') || (isOrganizer && st.orgView==='profile');
+    const viewDiscover = isOrganizer && st.orgTab==='discover' && st.orgView==='grid';
+    const viewShortlist = isOrganizer && st.orgTab==='shortlist';
+
+    return {
+      isLogin, isApp, isArtisan, isOrganizer,
+      t:T, dir, langLabel, cycleLang:()=>this.cycleLang(),
+      flipIcon: dir==='rtl' ? {transform:'scaleX(-1)'} : {},
+      email:st.email, password:st.password,
+      setEmail:e=>this.setState({email:e.target.value}),
+      setPassword:e=>this.setState({password:e.target.value}),
+      chooseArtisan:()=>this.setState({loginRole:'artisan'}),
+      chooseOrg:()=>this.setState({loginRole:'organizer'}),
+      roleArtStyle:this.seg(st.loginRole==='artisan'),
+      roleOrgStyle:this.seg(st.loginRole==='organizer'),
+      loginCta: st.loginRole==='artisan' ? T.signInArtisan : T.signInOrganizer,
+      doLogin:()=>this.setState({screen:'app', role:st.loginRole}),
+      meInitial: isArtisan ? self.name[0] : 'O',
+      meColor: isArtisan ? this.CRAFTS[self.craft].accent : '#1A6261',
+      switchToArtisan:()=>this.setState({role:'artisan'}),
+      switchToOrg:()=>this.setState({role:'organizer'}),
+      swArtStyle:this.segSmall(isArtisan),
+      swOrgStyle:this.segSmall(isOrganizer),
+      logout:()=>this.setState({screen:'login', password:''}),
+      nChat:this.nav(st.artisanTab==='chat'),
+      nEvents:this.nav(st.artisanTab==='events'),
+      nProfile:this.nav(st.artisanTab==='profile'),
+      nDiscover:this.nav(st.orgTab==='discover'),
+      nShortlist:this.nav(st.orgTab==='shortlist'),
+      setAChat:()=>this.setState({artisanTab:'chat'}),
+      setAEvents:()=>this.setState({artisanTab:'events'}),
+      setAProfile:()=>this.setState({artisanTab:'profile'}),
+      setODiscover:()=>this.setState({orgTab:'discover', orgView:'grid'}),
+      setOShortlist:()=>this.setState({orgTab:'shortlist'}),
+      savedCount:savedList.length,
+      railTipTitle: isArtisan ? T.proTipTitle : T.curatingTitle,
+      railTipBody: isArtisan ? T.proTipBody : T.curatingBody,
+      isMobile:st.isMobile, showSidebar:!st.isMobile,
+      mChat:this.mnav(st.artisanTab==='chat'),
+      mEvents:this.mnav(st.artisanTab==='events'),
+      mProfile:this.mnav(st.artisanTab==='profile'),
+      mDiscover:this.mnav(st.orgTab==='discover'),
+      mShortlist:this.mnav(st.orgTab==='shortlist'),
+      viewChat, viewEvents, viewProfile, viewDiscover, viewShortlist,
+      msgRef:(el)=>{this.msgEl=el;},
+      chatItems, typing:st.typing, prompts,
+      input:st.input,
+      setInput:e=>this.setState({input:e.target.value}),
+      onInputKey:e=>{ if(e.key==='Enter' && !e.shiftKey){ e.preventDefault(); this.sendMessage(st.input); } },
+      sendInput:()=>this.sendMessage(st.input),
+      startVoice:()=>this.startVoice(),
+      cancelVoice:()=>this.cancelVoice(),
+      stopVoiceAndSubmit:()=>this.stopVoiceAndSubmit(),
+      listening:st.listening,
+      voiceMode:st.voiceMode,
+      voiceModeOff:!st.voiceMode,
+      toggleVoiceMode:()=>this.toggleVoiceMode(),
+      micStyle:{width:'42px', height:'42px', flex:'none', borderRadius:'12px', background:'#F6EEE4', color:'#E0541F', border:'1px solid #EEE3D4', cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center'},
+      speakerStyle:{width:'42px', height:'42px', flex:'none', borderRadius:'12px', background:st.voiceMode ? '#FDEEE6' : '#F6EEE4', color:st.voiceMode ? '#F26638' : '#8A8178', border:'1px solid ' + (st.voiceMode ? '#F26638' : '#EEE3D4'), cursor:'pointer', display:'flex', alignItems:'center', justifyContent:'center'},
+      myEvents,
+      profile,
+      search:st.search, setSearch:e=>this.setState({search:e.target.value}),
+      craftChips, filteredArtisans,
+      shortlistArtisans, hasShortlist:savedList.length>0, noShortlist:savedList.length===0,
+      applyOpen, applyTitle, applyMeta,
+      pitch:st.pitch, setPitch:e=>this.setState({pitch:e.target.value}),
+      pieceOptions, attachSummary,
+      closeApply:()=>this.closeApply(),
+      submitApply:()=>this.submitApply(),
+      toastVisible:!!st.toast, toast:st.toast
+    };
+  }
+}
+</script>
+</body>
+</html>
