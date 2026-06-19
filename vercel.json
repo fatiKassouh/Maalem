@@ -6,6 +6,5 @@
       "source": "/((?!api/)(?!.*\\.).*)",
       "destination": "/Maalem.dc.html"
     }
-  ],
-
+  ]
 }
