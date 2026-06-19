@@ -5,14 +5,15 @@ const ASSETS = [
   '/index.html',
   '/Maalem.dc.html',
   '/manifest.json',
-  '/maalem-logo.png',
-  '/style.css', // if exists
+  '/maalem-logo.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(ASSETS);
+      return cache.addAll(ASSETS).catch(err => {
+          console.error('Cache addAll failed', err);
+        });
     })
   );
 });
