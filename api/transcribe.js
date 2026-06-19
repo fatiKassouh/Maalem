@@ -24,10 +24,10 @@ module.exports = async (req, res) => {
       'in ARABIC SCRIPT (Darija). Output ONLY the transcription — no translation, ' +
       'no quotes, no explanations. If the audio is silent or unclear, output nothing.';
 
-    // gemini-1.5-flash reliably accepts inline audio. If your project uses a
-    // different model, change the name below.
+    // gemini-2.0-flash is the current model that accepts inline audio.
+    // (gemini-1.5-flash was deprecated by Google in late 2025.)
     const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
