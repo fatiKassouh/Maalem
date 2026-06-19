@@ -6,5 +6,10 @@
       "source": "/((?!api/)(?!.*\\.).*)",
       "destination": "/Maalem.dc.html"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
 }

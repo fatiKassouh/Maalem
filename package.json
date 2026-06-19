@@ -7,9 +7,11 @@
   },
   "scripts": {
     "dev": "npx serve .",
-    "dev:vercel": "npx vercel dev --local",
+    "dev:vercel": "npx vercel dev",
     "start": "npx serve .",
     "vercel-build": "echo 'No build needed'"
+  },
+  "devDependencies": {
+    "vercel": "^54.14.2"
   }
 }
-

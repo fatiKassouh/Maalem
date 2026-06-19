@@ -2,7 +2,7 @@
   "name": "Maalem",
   "short_name": "Maalem",
   "description": "Maalem – Moroccan artisan assistant",
-  "start_url": "/",
+  "start_url": "/Maalem.dc.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1a1a1a",
